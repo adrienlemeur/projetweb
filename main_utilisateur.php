@@ -15,7 +15,6 @@
 		<div style="height:10vh;"> </div>
 
 		<main>
-			<?php if (!isset($_POST["select_query_type"])): ?>
 			<div id = "query_menu">
 				<label for="query_menu" id = "text_inscription_form" style="font-weight: bold;">Recherche</label>
 				<div style="height:5%;"></div>
@@ -32,7 +31,6 @@
 						</select>
 					</div>
 				</form>
-				<?php endif; ?>
 
 				<?php if (isset($_POST["select_query_type"]) && ($_POST["select_query_type"] == 'genome')): ?>
 					<form>
@@ -49,15 +47,14 @@
 						<div style="height:15vw;"></div>
 						<div><button type="submit" class="btn btn-default" style = "font-size: 1em;float:right;margin-right:5%;"> Recherche</button></div>
 					</form>
+
 				<?php endif; ?>
 				
-				
+
 				<?php if (isset($_POST["select_query_type"]) && ($_POST["select_query_type"] == 'gene')): ?>
 
 					<div id = "query_menu">
 						<form>
-							<label for="query_menu" id = "text_inscription_form" style="font-weight: bold;">Recherche</label>
-							<div style="height:2vw;"></div>
 							<div style = "margin-bottom:2%;">
 								<label for="nom" id = "text_query_form">Nom Gène</label>
 								<input type="text" id = "text_query_area_form" name="nom_item">
@@ -87,7 +84,6 @@
 							<div><button type="submit" class="btn btn-default" style = "font-size:1em;float:right;margin-right:5%;">Recherche</button></div>
 						</form>
 					</div>
-				
 				<?php endif; ?>
 				
 				<?php if (isset($_POST["select_query_type"]) && ($_POST["select_query_type"] == 'arn')): ?>
