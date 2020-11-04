@@ -3,7 +3,7 @@
 ## Installation
 
 ```bash
-tar -xvf projetweb
+gunzip projetweb.zip
 ```
 
 ## Usage
