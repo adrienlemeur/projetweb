@@ -1,21 +1,21 @@
 # projetweb
 
-##Installation
+## Installation
 
 ```bash
 tar -xvf projetweb
 ```
 
-##Usage
+## Usage
 BLABLABLA
 ```
 ```
 
-##Contributing
+## Contributing
 Adrien LE MEUR
 Ombeline LAMER
 
-##Licence
+## Licence
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this project to deal without restriction, including without limitation the
 rights to use, copy, modify, merge, publish, distribute copies of the project
