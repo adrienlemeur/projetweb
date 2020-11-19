@@ -66,16 +66,9 @@
 						<label for="role_choix3">Validateur</label>
 					</div>
 				</div>
-
-				<br><br>
-				<label for="motivation" id = "text_inscription_form"> Motivation : </label>
-				<textarea id="input_inscription_form" name="motivations" rows="5"> </textarea>
-
 			</div>
 
-
-			<div style="height:50vh;"></div>
-			<button type="submit" class="btn btn-default" style = "font-size: 1em;float:right;"> Inscription </button>
+			<button type="submit" class="btn btn-default" style = "font-size:1em;margin-left:60%"> Inscription </button>
 		</form>
 
 	</body>

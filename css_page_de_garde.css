@@ -1,6 +1,6 @@
 body
 {
-	font: 1.25em "Trebuchet MS",Arial,sans-serif ;
+	font: 1.25em "Trebuchet MS",Arial,sans-serif;
 	background-color: FireBrick;
 	color: White;
 }
@@ -38,13 +38,13 @@ body
 }
 
 #text_inscription_form{
-	color: #fff;
+	color: red;
 	line-height: 2em;
 	margin-left: 10%;
 }
 
 #bouton{
-	padding: 4px 25px ;
+	padding: 4px 25px;
 	margin-right: 25px;
 
 	background: #c00;

@@ -21,7 +21,7 @@ Please clone this folder onto your computer and follow the instructions below.
 
 
 2. Ombeline LAMER
-*  UML and RELATIONNEL (see at: https://lucid.app/invitations/accept/15776db4-76a9-4431-ba44-1af80971d515)
+* UML and RELATIONNEL (see at: https://lucid.app/invitations/accept/15776db4-76a9-4431-ba44-1af80971d515)
 * databaseCreation.sql
 * annotation.py (and output files : Annotation-ADN.txt Annotation-CDS.txt Annotation-pep.txt)
 * README.md
