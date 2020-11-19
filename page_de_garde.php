@@ -7,12 +7,11 @@
 			Page de garde
 		</head>
 
-
 		<div style="float:right;">
 			<form class="form-inline" method="post" action="/main_utilisateur.php" style="float:right;">
 				<label for="email" id = "bouton">Email : </label>
 				<input type="email" class="form-control" id="email" placeholder="Entrez votre email" name="email">
-		
+
 				<label for="pwd" id = "bouton">Mot de Passe : </label>
 				<input type="password" class="form-control" id="pwd" placeholder="Entrez un mot de passe" name="pwd">
 	
