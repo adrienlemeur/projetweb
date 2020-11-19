@@ -26,7 +26,6 @@
 							<option disabled selected value><?php echo $_POST["select_query_type"]?></option>
 							<option value="genome">Génome</option>
 							<option value="gene">Gène</option>
-							<option value="arn">Transcrit</option>
 							<option value="prot">Protéine</option>
 						</select>
 					</div>
@@ -47,7 +46,6 @@
 						<div style="height:15vw;"></div>
 						<div><button type="submit" class="btn btn-default" style = "font-size: 1em;float:right;margin-right:5%;"> Recherche</button></div>
 					</form>
-
 				<?php endif; ?>
 				
 
@@ -56,13 +54,66 @@
 					<div id = "query_menu">
 						<form>
 							<div style = "margin-bottom:2%;">
-								<label for="nom" id = "text_query_form">Nom Gène</label>
+								<label for="nom_gene" id = "text_query_form">Nom</label>
 								<input type="text" id = "text_query_area_form" name="nom_item">
 							</div>
 
 							<div style = "margin-bottom:2%;">
-								<label for="nom" id = "text_query_form">Sigle Gène</label>
+								<label for="sigle" id = "text_query_form">Sigle</label>
 								<input type="text" id = "text_query_area_form" name="sigle_item">
+							</div>
+
+							<div style = "margin-bottom:2%;">
+								<label for="sigle" id = "text_query_form">Biotype</label>
+								<input type="text" id = "text_query_area_form" name="biotype">
+							</div>
+
+
+							<div style = "margin-bottom:2%;">
+								<label for="nom" id = "text_query_form">Nom Génome</label>
+								<input type="text" id = "text_query_area_form" name="genome_name_item">
+							</div>
+
+							<div style = "margin-bottom:2%;">
+								<label for="nom" id = "text_query_form">Description</label>
+								<input type="text" id = "text_query_area_form" name="description">
+							</div>
+
+							<div style = "margin-bottom:4%;margin-left:32%;">
+								<label for="nom" id = "text_query_form">Début</label>
+								<input type="text" style = "width:22%;" name="start">
+
+								<label for="nom" id = "text_query_form">Fin</label>
+								<input type="text" style = "width:22%;" name="stop">
+							</div>
+
+							<div>
+								<label for="sequence" id = "text_query_form">Séquence</label>
+								<textarea id="text_query_area_form" name="sequence" rows="10"> </textarea>
+							</div>
+
+							<div style="height:11vw;"></div>
+							<div><button type="submit" class="btn btn-default" style = "font-size:1em;float:right;margin-right:5%;">Recherche</button></div>
+						</form>
+					</div>
+				<?php endif; ?>
+				
+				<?php if (isset($_POST["select_query_type"]) && ($_POST["select_query_type"] == 'prot')): ?>
+					<div id = "query_menu">
+						<form>
+							<div style = "margin-bottom:2%;">
+								<label for="nom_gene" id = "text_query_form">Nom</label>
+								<input type="text" id = "text_query_area_form" name="nom_item">
+							</div>
+
+							<div style = "margin-bottom:2%;">
+								<label for="sigle" id = "text_query_form">Biotype</label>
+								<input type="text" id = "text_query_area_form" name="biotype">
+							</div>
+
+							<div style = "margin-bottom:2%;">
+								<label for="nom" id = "text_query_form">Nom Gène</label>
+								<input type="text" id = "text_query_area_form" name="gene_name">
 							</div>
 
 							<div style = "margin-bottom:2%;">
@@ -70,9 +121,9 @@
 								<input type="text" id = "text_query_area_form" name="genome_name_item">
 							</div>
 
-							<div style = "margin-bottom:4%;">
-								<label for="nom" id = "text_query_form">Espèce</label>
-								<input type="text" id = "text_query_area_form" name="species_item">
+							<div style = "margin-bottom:2%;">
+								<label for="nom" id = "text_query_form">Description</label>
+								<input type="text" id = "text_query_area_form" name="description">
 							</div>
 							
 							<div>
@@ -85,203 +136,12 @@
 						</form>
 					</div>
 				<?php endif; ?>
-				
-				<?php if (isset($_POST["select_query_type"]) && ($_POST["select_query_type"] == 'arn')): ?>
-				<?php endif; ?>
-				
-				<?php if (isset($_POST["select_query_type"]) && ($_POST["select_query_type"] == 'prot')): ?>
-				<?php endif; ?>
 
 			</div>
 			<div id = "scrollable_div">
-<table class="demo">
-	<thead>
-	<tr>
-		<th>Header 1</th>
-		<th>Header 2</th>
-		<th>Header 3</th>
-		<th>Header 4</th>
-		<th>Header 5</th>
-	</tr>
-	</thead>
-	<tbody>
-	<tr>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tbody>
-</table>
+				<table class="demo">
+				</table>
+
 			</div>
 
 			<div id = "scrollable_div">
