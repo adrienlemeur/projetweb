@@ -72,8 +72,7 @@
 				if(isset($_POST["submit_button_inscription"])) {
 					echo "Submit Button Has Been Pushed";
 					$pwd_hashed = password_hash($_POST['pwd'], PASSWORD_DEFAULT);
-					
-					
+
 					#Ne fonctionne pas, juste la syntaxe !!
 					/*
 					$req = $bdd->prepare('INSERT INTO utilisateur(pseudo, pass, email, date_inscription) VALUES(:pseudo, :pass, :email, CURDATE())');

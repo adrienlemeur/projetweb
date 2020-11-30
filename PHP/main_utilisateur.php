@@ -161,12 +161,12 @@
 			<div class = "scrollable_div">
 				<table class="demo">
 				</table>
-
 			</div>
 
 			<! Détail sur le résultat de la query sélectionné>
 			<div class = "scrollable_div">
 			</div>
+
 		</main>
 
 

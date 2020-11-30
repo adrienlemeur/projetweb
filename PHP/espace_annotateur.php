@@ -3,7 +3,7 @@
 <html>
 	<body>
 		<head>
-			Espace annotateur
+			Espace Annotateur
 		</head>
 
 			<! Menu horizontal pour sélectionner l'interface (Utilisateur / Annotateur / Validateur)
