@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 	<link rel="stylesheet" type="text/css" href="css_page_de_garde.css">
+
 <html>
 	<body>
 		<head>
 			Espace Utilisateur
-			
 			<?php echo $_POST["select_query_type"]?>
 		</head>
 
@@ -19,7 +19,7 @@
 			</ul>
 
 		<div style="height:10vh;"> </div>
-		
+
 		<main>
 
 				<!_____________________________________________________________________________________________________>
