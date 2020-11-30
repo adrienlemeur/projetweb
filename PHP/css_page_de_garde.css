@@ -5,12 +5,12 @@ body
 	color: White;
 }
 
-#main_text{
+.main_text{
 	text-align: center ;
 	font-size: 1.25em;
 }
 
-#plain_text{
+.plain_text{
 	font-size: 0.9em;
 
 	margin-right: 10%;
@@ -20,16 +20,16 @@ body
 	text-justify: auto;
 }
 
-#email{font-size: 1em;}
-#pwd{font-size: 1em;}
+.email{font-size: 1em;}
+.pwd{font-size: 1em;}
 
-#deux_blocs{
+.deux_blocs{
 	width: 45%;
 	float : left;
 	margin-right: 25px;
 }
 
-#input_inscription_form {
+.input_inscription_form {
 	font-size: 1em;
 	width: 50%;
 	float:right;
@@ -37,13 +37,13 @@ body
 	margin-top: 2px;
 }
 
-#text_inscription_form{
-	color: red;
+.text_inscription_form{
+	color: white;
 	line-height: 2em;
 	margin-left: 10%;
 }
 
-#bouton{
+.bouton{
 	padding: 4px 25px;
 	margin-right: 25px;
 
@@ -55,11 +55,11 @@ body
 	text-decoration: none;
 }
 
-#menu_horizontal li {
+.menu_horizontal li {
 	display: inline ;
 }
 
-#menu_horizontal li a {
+.menu_horizontal li a {
 	display: inline;
 	padding: 4px 50px ;
 	background: #c00;
@@ -69,27 +69,27 @@ body
 	text-decoration: none;
 }
 
-#menu_horizontal li a:hover, #navigation li a:focus, #navigation li a:active {
+.menu_horizontal li a:hover, #navigation li a:focus, #navigation li a:active {
 	background:red;
 	color:yellow;
 	text-decoration: underline;
 }
 
-#query_menu{
+.query_menu {
 	float:left;
 	background-color:blue;
 	height: 32vw;
 	width: 27vw;
 }
 
-#text_query_form{
+.text_query_form {
 	color: #fff;
 	margin-left: 3%;
 	font-size:0.9em;
 	margin-bottom:2%;
 }
 
-#text_query_area_form{
+.text_query_area_form {
 	float:right;
 	margin-right:5%;
 	width: 45%;
@@ -97,7 +97,7 @@ body
 }
 
 
-#scrollable_div{
+.scrollable_div{
 	float:left;
 	background-color:red;
 	height: 80vh;
