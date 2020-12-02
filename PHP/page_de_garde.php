@@ -1,3 +1,9 @@
+<?php
+	include_once('functions/connection.php');
+	page_init();
+?>
+
+
 <!DOCTYPE html>
 	<link rel="stylesheet" type="text/css" href="css_page_de_garde.css">
 
@@ -8,11 +14,6 @@
 				Page de garde
 			</head>
 			<br><br><br>			
-			<?php
-				include_once('functions/connection.php');
-				connect_db();
-				echo "Etat de la connection: "; is_conn_okay($db_conn);
-			?>
 
 			<div style="float:right;">
 				<form class="form-inline" method="post" action="main_utilisateur.php" style="float:right;">
