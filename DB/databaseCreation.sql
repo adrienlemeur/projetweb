@@ -9,7 +9,7 @@ CREATE SCHEMA db_genome
 		adPhysique VARCHAR(100),
 		dateConnexion DATE DEFAULT CURRENT_DATE,
 		statut VARCHAR(10) DEFAULT ('Lecteur') CHECK (statut='Admin'or statut='Lecteur' or statut='Annotateur' or statut='Validateur'),
-		mdp VARCHAR(30) NOT NULL
+		mdp VARCHAR(100) NOT NULL
 	)
 	
 	CREATE TABLE genome (
