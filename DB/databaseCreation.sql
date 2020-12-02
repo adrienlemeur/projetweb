@@ -51,4 +51,4 @@ CREATE SCHEMA db_genome
 COPY db_genome.genome FROM '/var/www/html/projet_web/DB/genome.csv' DELIMITERS ';' CSV HEADER;
 COPY db_genome.cds FROM '/var/www/html/projet_web/DB/cds.csv' DELIMITERS ';' CSV HEADER;
 COPY db_genome.pep FROM '/var/www/html/projet_web/DB/pep.csv' DELIMITERS ';' CSV HEADER;
-SET search_path to genome_db;
+SET search_path to db_genome;
