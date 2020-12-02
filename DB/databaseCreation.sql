@@ -48,7 +48,7 @@ CREATE SCHEMA db_genome
 
 --chargement des donnees dans la base
 
-COPY db_genome.genome FROM '/home/ombeline/Documents/ProjetWeb/projetweb/genome.csv' DELIMITERS ';' CSV HEADER;
-COPY db_genome.cds FROM '/home/ombeline/Documents/ProjetWeb/projetweb/cds.csv' DELIMITERS ';' CSV HEADER;
-COPY db_genome.pep FROM '/home/ombeline/Documents/ProjetWeb/projetweb/pep.csv' DELIMITERS ';' CSV HEADER;
+COPY db_genome.genome FROM '/home/ombeline/Documents/ProjetWeb/projetweb/DB/genome.csv' DELIMITERS ';' CSV HEADER;
+COPY db_genome.cds FROM '/home/ombeline/Documents/ProjetWeb/projetweb/DB/cds.csv' DELIMITERS ';' CSV HEADER;
+COPY db_genome.pep FROM '/home/ombeline/Documents/ProjetWeb/projetweb/DB/pep.csv' DELIMITERS ';' CSV HEADER;
 
