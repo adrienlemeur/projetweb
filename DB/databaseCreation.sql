@@ -1,6 +1,6 @@
 CREATE SCHEMA db_genome
 	-- DOCUMENTATION : https://www.postgresql.org/docs/current/index.html
-	
+
 	CREATE TABLE utilisateurs (
 		email  VARCHAR(50) PRIMARY KEY,
 		prenom VARCHAR(20),
@@ -48,7 +48,7 @@ CREATE SCHEMA db_genome
 
 --chargement des donnees dans la base
 
-COPY db_genome.genome FROM '/home/ombeline/Documents/ProjetWeb/projetweb/DB/genome.csv' DELIMITERS ';' CSV HEADER;
-COPY db_genome.cds FROM '/home/ombeline/Documents/ProjetWeb/projetweb/DB/cds.csv' DELIMITERS ';' CSV HEADER;
-COPY db_genome.pep FROM '/home/ombeline/Documents/ProjetWeb/projetweb/DB/pep.csv' DELIMITERS ';' CSV HEADER;
-
+COPY db_genome.genome FROM '/var/www/html/projet_web/DB/genome.csv' DELIMITERS ';' CSV HEADER;
+COPY db_genome.cds FROM '/var/www/html/projet_web/DB/cds.csv' DELIMITERS ';' CSV HEADER;
+COPY db_genome.pep FROM '/var/www/html/projet_web/DB/pep.csv' DELIMITERS ';' CSV HEADER;
+SET search_path to genome_db;
