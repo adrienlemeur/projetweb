@@ -1,0 +1,29 @@
+Annotations selon les types de séquences
+
+>genome
+nom (après le chevron)
+dna:
+chromosome: codeID:Chromosome:nombre:nombre:numero
+
+> faire un parser pour voir tout les tags possibles et voir si certains tag sont limités à quelques choix/possibiltés (dans ce cas faire une liste déroulante pour l'annotation de cette case)
+
+>cds
+nom (après le chevron)
+cds
+chromosome: (cf plus haut) //sinon remplacé par//  plasmid:
+gene:(code 1lettre+4chiffres)
+gene_biotype: (faire une liste des tag possible)
+transcript_biotype:
+gene_symbol:
+description: (plusieurs, séparée par des virgules+ espace) jusqu'à la fin CAR dernière annotation
+
+>pep
+nom (après le chevron)
+pep
+chromosome: (cf plus haut) ou plasmid:
+gene:
+transcript: (meme que le nom)
+gene_biotype:
+transcript_biotype:
+gene_symbol:
+description:
