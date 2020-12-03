@@ -3,6 +3,7 @@
 	function page_init()
 	{
 		session_start();
+
 	}
 
 
@@ -24,6 +25,7 @@
 							. " port=" . $db_info['port']
 							. " password=" . $db_info['password']);
 	}
+	
 
 	function close_db()
 	{
