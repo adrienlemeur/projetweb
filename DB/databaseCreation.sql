@@ -11,7 +11,7 @@ CREATE SCHEMA db_genome
 		statut VARCHAR(10) DEFAULT ('Lecteur') CHECK (statut='Admin'or statut='Lecteur' or statut='Annotateur' or statut='Validateur'),
 		mdp VARCHAR(100) NOT NULL
 	)
-	
+
 	CREATE TABLE genome (
 		nom_genome VARCHAR(36) PRIMARY KEY,
 		seq TEXT NOT NULL,
