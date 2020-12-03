@@ -51,4 +51,6 @@ CREATE SCHEMA db_genome
 COPY db_genome.genome FROM '/var/www/html/projet_web/DB/genome.csv' DELIMITERS ';' CSV HEADER;
 COPY db_genome.cds FROM '/var/www/html/projet_web/DB/cds.csv' DELIMITERS ';' CSV HEADER;
 COPY db_genome.pep FROM '/var/www/html/projet_web/DB/pep.csv' DELIMITERS ';' CSV HEADER;
-SET search_path to db_genome;
+
+CREATE USER iamtheone SUPERUSER PASSWORD '1e567fd214b021e5a6bee3ed4291fc52';
+ALTER SCHEMA db_genome OWNER TO iamtheone;
