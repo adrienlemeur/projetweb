@@ -15,24 +15,48 @@
 			</head>
 			<br><br><br>			
 
+			<?php
+				if(isset($_POST["submit_connexion_button"])) {
+					connect_db();
+					
+					$check_connection = "SELECT mdp FROM db_genome.utilisateurs WHERE email = $1;";
+					$connection_result = pg_query_params($GLOBALS['db_conn'], $check_connection, array($_POST['email'])) or die("Not working") ;
+					$query_pwd = pg_fetch_result($connection_result, 0, 0);
+					close_db();
+
+					if(empty($query_pwd)){
+						echo "Email invalide";
+					} else {
+						if(password_verify ($_POST['pwd'] , $query_pwd)){
+							$_SESSION['CONNECTION'] = 'YES';
+							header("location:main_utilisateur.php");
+						} else {
+							echo "Mot de passe invalide";
+						}
+					}
+
+					$_POST = array();
+				}
+			?>
+
 			<div style="float:right;">
-				<form class="form-inline" method="post" action="main_utilisateur.php" style="float:right;">
+				<form class="form-inline" method="post" action="<?php echo $_SERVER['PHP_SELF']?>" style="float:right;">
 					<label for="email" class = "bouton">Email : </label>
 					<input type="email" class="form-control" class ="email" placeholder="Entrez votre email" name="email">
 
 					<label for="pwd" class = "bouton">Mot de Passe : </label>
 					<input type="password" class="form-control" class = "pwd" placeholder="Entrez un mot de passe" name="pwd">
 
-					<button type="submit" class="btn btn-default" style = "font-size: 1em;">Submit</button>
+					<button type="submit" name = "submit_connexion_button" class="btn btn-default" style = "font-size: 1em;">Connexion</button>
 				</form>
+
 					<div>
 				<ul class = "menu_horizontal" style="float:right;">
 					<li><a href="inscription.php">Inscription</a></li>
 					</div>
 				</ul>
 			</div>
-
-		<br><br><br><br><br><br><br><br>
+		<br><br><br><br><br>
 
 		<div class = "main_text">
 			Bienvenue sur la banque de donnée en ligne d'Adrien Le Meur & Ombeline Lamer !
