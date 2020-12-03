@@ -92,7 +92,13 @@
 					if(empty($_POST['pwd_2']) or ($_POST['pwd_2'] != $_POST['pwd'])){
 						echo "Veuillez confirmer votre mot de passe";
 						die;
-					}					
+					}
+					
+					if(empty($_POST['role'])){
+						echo "Vous devez choisir un rôle !";
+						die;
+					}
+
 
 					$pwd_hashed = password_hash($_POST['pwd'], PASSWORD_DEFAULT);
 
@@ -100,10 +106,13 @@
 
 					$inscription = "INSERT INTO
 						db_genome.utilisateurs(email, prenom, nom, tel, adphysique, statut, mdp)
-						VALUES('$_POST[email]','$_POST[prenom]', '$_POST[nom]', '$_POST[telephone]', '$_POST[adresse]', '$_POST[role]', '$pwd_hashed');";
-					echo $inscription;
-					pg_query($GLOBALS['db_conn'], $inscription);
+						VALUES($1, $2, $3, $4, $5, $6, $7);";
+
+					pg_query_params($GLOBALS['db_conn'], $inscription, array("%" . $_POST[email], $_POST[prenom], $_POST[nom], $_POST[telephone], $_POST[adresse], $_POST[role], $pwd_hashed . "%")) or die ("Le processus d'inscription n'a pas fonctionné, veuillez réessayer");
+
+					#pg_query($GLOBALS['db_conn'], $inscription);
 					close_db();
+					header("location:page_de_garde.php");
 				}
 
 				$_POST = array();
