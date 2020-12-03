@@ -32,17 +32,18 @@ CREATE SCHEMA db_genome
 	)
 	
 	CREATE TABLE pep(
-		nom_cds VARCHAR(15) PRIMARY KEY REFERENCES cds, --ATTENTION ICI ! voir si ça marche
+		nom_cds VARCHAR(15) PRIMARY KEY REFERENCES cds,
 		transcript VARCHAR(15) UNIQUE,
 		transcript_biotype VARCHAR(20),
 		seq_pep TEXT NOT NULL
 	)
 	
 	CREATE TABLE attribution_annotateur(
-		nom_genome VARCHAR(35) REFERENCES genome,
+		nom_genome VARCHAR(36) REFERENCES genome,
 		nom_cds VARCHAR(15) REFERENCES cds,
 		mail_annot VARCHAR(50) REFERENCES utilisateurs(email) ON UPDATE CASCADE,
-		valide INT,
+		valide INT DEFAULT 0 CHECK (valide=1 or valide=0), -- 1 si oui, 0 si non
+		annote INT DEFAULT 0 CHECK (annote=1 or annote=0), -- 1 si oui, 0 si non
 		PRIMARY KEY (nom_genome, nom_cds, mail_annot)
 	);
 
@@ -51,6 +52,8 @@ CREATE SCHEMA db_genome
 COPY db_genome.genome FROM '/var/www/html/projet_web/DB/genome.csv' DELIMITERS ';' CSV HEADER;
 COPY db_genome.cds FROM '/var/www/html/projet_web/DB/cds.csv' DELIMITERS ';' CSV HEADER;
 COPY db_genome.pep FROM '/var/www/html/projet_web/DB/pep.csv' DELIMITERS ';' CSV HEADER;
+
+\i /var/www/html/projet_web/DB/dataComp.sql -- ATTENTION : rectifier le chemin si besoin
 
 CREATE USER iamtheone SUPERUSER PASSWORD '1e567fd214b021e5a6bee3ed4291fc52';
 ALTER SCHEMA db_genome OWNER TO iamtheone;
