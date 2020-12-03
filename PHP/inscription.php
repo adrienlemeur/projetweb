@@ -1,6 +1,6 @@
 <?php
 	include_once('functions/connection.php');
-	page_init();
+	session_start();
 ?>
 
 <!DOCTYPE html>
@@ -97,7 +97,6 @@
 						echo "Vous devez choisir un rôle !";
 						die;
 					}
-
 
 					$pwd_hashed = password_hash($_POST['pwd'], PASSWORD_DEFAULT);
 

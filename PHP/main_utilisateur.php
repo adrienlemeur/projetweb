@@ -1,28 +1,31 @@
 <!DOCTYPE html>
-	<link rel="stylesheet" type="text/css" href="css_page_de_garde.css">
+
+<link rel="stylesheet" type="text/css" href="css_page_de_garde.css">
 
 <html>
 	<body>
 		<head>
 			Espace Utilisateur
-			<?php echo $_POST["select_query_type"]?>
 		</head>
+		<div>
+		<?php
+			include_once('functions/connection.php');
+			page_init();
+		?>
 
-			<! Menu horizontal pour sélectionner l'interface (Utilisateur / Annotateur / Validateur)
-			Affichage en fonction des permissions + vérifier dans chaque page que l'utilisateur en cours a les droits pour accéder à cette fonctionnalité
-			>
+		</div>
+
 			<ul class = "menu_horizontal" style="float:right;">
 				<li> <a href="main_utilisateur.php">Espace Utilisateur</a> </li>
 				<li> <a href="espace_annotateur.php">Espace Annotateur</a> </li>
 				<li> <a href="espace_validateur.php">Espace Validateur</a> </li>
-				<li> <a href="page_de_garde.php" title = "Déconnexion"> Déconnexion</a> </li>
+				<li> <a href="deconnection.php">Déconnexion</a> </li>
 			</ul>
 
 		<div style="height:10vh;"> </div>
 
 		<main>
 
-				<!_____________________________________________________________________________________________________>
 			<div class = "query_menu">
 				<label class = "text_inscription_form" style="font-weight: bold;">Recherche</label>
 				<div style="height:5%;"></div>
@@ -39,10 +42,8 @@
 					</div>
 				</form>
 
-				<!_____________________________________________________________________________________________________>
-
 				<?php if(isset($_POST["select_query_type"]) && ($_POST["select_query_type"] == 'genome')): ?>
-					<form method = "post">
+					<form method = "post" action="<?php echo $_SERVER['PHP_SELF']?>">
 						<div style = "margin-bottom:2%;">
 							<label class = "text_query_form">Nom Génome</label>
 							<input class = "text_query_area_form" type = "text" name="q_genome_name">
@@ -54,21 +55,45 @@
 						</div>
 						<div>
 							<label class = "text_query_form">Séquence</label>
-							<textarea class = "text_query_area_form" name="q_sequence" rows="10"> </textarea>
+							<textarea class = "text_query_area_form" name="q_sequence" rows="10"></textarea>
 						</div>
 
 
 						<div style="height:15vw;"></div>
 						<div><button name = "query_genome" type="submit" class="btn btn-default" style = "font-size: 1em;float:right;margin-right:5%;"> Recherche</button></div>
 					</form>
-				<?php endif; ?>
-				
-				<!_____________________________________________________________________________________________________>
 
+				<?php endif;
+
+				if(isset($_POST['query_genome'])){
+
+						$query = "SELECT nom_genome, espece FROM db_genome.genome";
+						
+						if(!empty($_POST['q_genome_name']) or !empty($_POST['q_species']) or !empty($_POST['q_sequence'])){
+							$query = $query . " WHERE 1=1";
+
+							if(isset($_POST['q_genome_name'])){
+								$query = $query . " AND nom_genome LIKE '%" . $_POST['q_genome_name'] . "%'";
+							}
+							
+							if(isset($_POST['q_species'])){
+								$query = $query . " AND espece LIKE '%" . $_POST['q_species'] . "%'";
+							}
+							
+							if(isset($_POST['q_sequence'])){
+								$query = $query . " AND seq LIKE '%" . $_POST['q_sequence']. "%'";
+							}
+						}
+
+						$query = $query . ";";
+						echo $query;
+					}
+				?>
+				
 				<?php if (isset($_POST["select_query_type"]) && ($_POST["select_query_type"] == 'gene')): ?>
 
 					<div class = "query_menu">
-						<form method = "post">
+						<form method = "post" action="<?php echo $_SERVER['PHP_SELF']?>">
 							<div style = "margin-bottom:2%;">
 								<label class = "text_query_form">Nom</label>
 								<input class = "text_query_area_form" type = "text" name="q_gene_name">
@@ -76,7 +101,7 @@
 
 							<div style = "margin-bottom:2%;">
 								<label class = "text_query_form">Sigle</label>
-								<input class = "text_query_area_form" type = "text" name="q_sigle">
+								<input class = "text_query_area_form" type = "text" name="q_symbol">
 							</div>
 
 							<div style = "margin-bottom:2%;">
@@ -112,13 +137,47 @@
 							<div><button name = "query_gene" type="submit" class="btn btn-default" style = "font-size:1em;float:right;margin-right:5%;">Recherche</button></div>
 						</form>
 					</div>
-				<?php endif; ?>
-				
-				<!_____________________________________________________________________________________________________>
+				<?php endif;
+
+				if(isset($_POST['query_gene'])){
+
+						$query = "SELECT nom_cds, gene_symbole, genome FROM db_genome.cds as cds, db_genome.genome as genome WHERE cds.nom_genome == genome.nom_genome";
+
+						if(isset($_POST['q_gene_name'])){
+							$query = $query . " AND nom_cds LIKE '%" . $_POST['q_gene_name'] . "%'";
+						}
+						
+						if(isset($_POST['q_symbol'])){
+							$query = $query . " AND gene_symbol LIKE '%" . $_POST['q_symbol'] . "%'";
+						}
+
+						if(isset($_POST['q_biotype'])){
+							$query = $query . " AND gene_biotype LIKE '%" . $_POST['q_biotype'] . "%'";
+						}
+
+						if(isset($_POST['q_genome_name'])){
+							$query = $query . " AND nom_genome LIKE '%" . $_POST['q_genome_name'] . "%'";
+						}
+
+						
+						if(isset($_POST['q_description'])){
+							$query = $query . " AND description LIKE '%" . $_POST['q_description'] . "%'";
+						}
+						
+						#if(isset($_POST['q_start']) && isset($_POST['q_stop'])){
+						#	$query = $query . " AND start > '" . $_POST['q_start'] . "' AND start < '" . $_POST['q_stop'] . . "'";
+						#}
+
+
+						$query = $query . ";";
+						echo $query;
+					}
+
+				?>
 				
 				<?php if (isset($_POST["select_query_type"]) && ($_POST["select_query_type"] == 'prot')): ?>
 					<div id = "query_menu">
-						<form method = "post">
+						<form method = "post" action="<?php echo $_SERVER['PHP_SELF']?>">
 							<div style = "margin-bottom:2%;">
 								<label class = "text_query_form">Nom</label>
 								<input class = "text_query_area_form" type="text" name="q_rna_name">
@@ -154,9 +213,9 @@
 						</form>
 					</div>
 				<?php endif; ?>
-				<!_____________________________________________________________________________________________________>
 			</div>
 			
+
 			<! Résultat de la query sous forme de tableau>
 			<div class = "scrollable_div">
 				<table class="demo">
@@ -172,3 +231,7 @@
 
 	</body>
 </html>
+
+<?php
+	$_POST = array();
+?>

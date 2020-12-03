@@ -17,7 +17,7 @@ CREATE SCHEMA db_genome
 		seq TEXT NOT NULL,
 		espece VARCHAR(50)
 	)
-	
+
 	CREATE TABLE cds (
 		nom_cds VARCHAR(15) PRIMARY KEY,
 		chromosome VARCHAR(15) CHECK (chromosome='chromosome' or chromosome='plasmid'),

@@ -3,9 +3,11 @@
 	function page_init()
 	{
 		session_start();
-
+		if($_SESSION['CONNECTION'] != 'YES'){
+			echo "Connectez vous pour vous pour pouvoir accéder à cette page";
+			die;
+		}
 	}
-
 
 
 	// Variable globale de connexion base de données pour simplifier

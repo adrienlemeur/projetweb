@@ -1,6 +1,5 @@
 <?php
 	include_once('functions/connection.php');
-	page_init();
 ?>
 
 
@@ -17,25 +16,40 @@
 
 			<?php
 				if(isset($_POST["submit_connexion_button"])) {
+					#connection à la base de donnée
 					connect_db();
 					
-					$check_connection = "SELECT mdp FROM db_genome.utilisateurs WHERE email = $1;";
-					$connection_result = pg_query_params($GLOBALS['db_conn'], $check_connection, array($_POST['email'])) or die("Not working") ;
+					#Interrogation de la base de donnée : on cherche l'email dans la base de donnée
+					$connection_query = "SELECT mdp,statut FROM db_genome.utilisateurs WHERE email = $1;";
+					$connection_result = pg_query_params($GLOBALS['db_conn'], $connection_query, array($_POST['email'])) or die("Connection impossible") ;
 					$query_pwd = pg_fetch_result($connection_result, 0, 0);
-					close_db();
-
+				
+				
+					#Si aucun email ne correspond dans la base de donnée (query vide)
 					if(empty($query_pwd)){
 						echo "Email invalide";
 					} else {
+						#si l'email est trouvé dans la base de donnée
+						#le mot de passe entré correspond à celui associé à l'email dans la base
 						if(password_verify ($_POST['pwd'] , $query_pwd)){
+							#lancement de la session
+							session_start();
+							$_SESSION['role'] = pg_fetch_result($connection_result, 0, 1);
+
+							#variable permettant de vérifier la connection de l'utilisateur avant d'afficher les pages
 							$_SESSION['CONNECTION'] = 'YES';
+
+							#accession à la plage utilisateur, accessible par tout les types d'utilisateur
 							header("location:main_utilisateur.php");
 						} else {
+						#le mot de passe ne correspond pas
 							echo "Mot de passe invalide";
 						}
 					}
 
-					$_POST = array();
+					pg_free_result($connection_result); #libère les résultats
+					close_db(); #fermeture de la base
+					$_POST = array(); #délétion des variables POST en vue du rafraichissement de la page
 				}
 			?>
 
