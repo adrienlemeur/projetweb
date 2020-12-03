@@ -9,7 +9,6 @@
 		}
 	}
 
-
 	// Variable globale de connexion base de données pour simplifier
 	//$db_conn = null;
 

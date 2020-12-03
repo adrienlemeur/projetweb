@@ -60,7 +60,7 @@
 
 
 						<div style="height:15vw;"></div>
-						<div><button name = "query_genome" type="submit" class="btn btn-default" style = "font-size: 1em;float:right;margin-right:5%;"> Recherche</button></div>
+						<button name = "query_genome" type="submit" class="btn btn-default" style = "font-size: 1em;float:right;margin-right:5%;"> Recherche</button>
 					</form>
 
 				<?php endif;
@@ -86,7 +86,6 @@
 						}
 
 						$query = $query . ";";
-						echo $query;
 					}
 				?>
 				
@@ -102,6 +101,11 @@
 							<div style = "margin-bottom:2%;">
 								<label class = "text_query_form">Nom CDS</label>
 								<input class = "text_query_area_form" type = "text" name="q_cds_name">
+							</div>
+							
+							<div style = "margin-bottom:2%;">
+								<label class = "text_query_form">Espèce</label>
+								<input class = "text_query_area_form" type = "text" name="q_species">
 							</div>
 
 							<div style = "margin-bottom:2%;">
@@ -138,8 +142,8 @@
 								<textarea class = "text_query_area_form" name="q_sequence" rows="10"></textarea>
 							</div>
 
-							<div style="height:11vw;"></div>
-							<div><button name = "query_gene" type="submit" class="btn btn-default" style = "font-size:1em;float:right;margin-right:5%;">Recherche</button></div>
+							<div style="height:7.5vw;"></div>
+							<button name = "query_gene" type="submit" class="btn btn-default" style = "font-size:1em;float:right;margin-right:5%;">Recherche</button>
 						</form>
 					</div>
 				<?php endif;
@@ -156,6 +160,10 @@
 							$query = $query . " AND nom_cds LIKE '%" . $_POST['q_cds_name'] . "%'";
 						}
 						
+						if(!empty($_POST['q_species'])){
+							$query = $query . " AND genome.espece LIKE '%" . $_POST['q_species'] . "%'";
+						}
+
 						if(!empty($_POST['q_symbol'])){
 							$query = $query . " AND cds.gene_symbol LIKE '%" . $_POST['q_symbol'] . "%'";
 						}
@@ -179,7 +187,6 @@
 						if(!empty($_POST['q_sequence'])){
 							$query = $query . " AND cds_sequence LIKE '%" . $_POST['q_sequence'] . "%'";
 						}
-						
 						$query = $query . ";";
 					}
 
@@ -189,8 +196,8 @@
 					<div id = "query_menu">
 						<form method = "post" action="<?php echo $_SERVER['PHP_SELF']?>">
 							<div style = "margin-bottom:2%;">
-								<label class = "text_query_form">Nom</label>
-								<input class = "text_query_area_form" type="text" name="q_rna_name">
+								<label class = "text_query_form">Nom CDS</label>
+								<input class = "text_query_area_form" type="text" name="q_cds_name">
 							</div>
 
 							<div style = "margin-bottom:2%;">
@@ -218,29 +225,62 @@
 								<textarea class = "text_query_area_form" name="q_sequence" rows="10"> </textarea>
 							</div>
 
-							<div style="height:11vw;"></div>
-							<div><button name = "query_prot" type="submit" class="btn btn-default" style = "font-size:1em;float:right;margin-right:5%;">Recherche</button></div>
+							<div style="height:7.5vw;"></div>
+							<button name = "query_prot" type="submit" class="btn btn-default" style = "font-size:1em;float:right;margin-right:5%;">Recherche</button>
 						</form>
 					</div>
-				<?php endif;
-				
-				
-				
-				
-				
-				
-				
-				
-				?>
+					<?php endif;
+						if(isset($_POST['query_prot'])){
+					
+							$query = "SELECT cds.nom_cds, cds.gene, genome.nom_genome, genome.espece FROM db_genome.genome as genome, db_genome.cds as cds, db_genome.pep as pep WHERE cds.nom_genome = genome.nom_genome AND pep.nom_cds  = cds.nom_cds";
+
+							if(!empty($_POST['q_cds_name'])){
+								$query = $query . " AND pep.nom_cds LIKE '%" . $_POST['q_cds_name'] . "%'";
+							}
+							
+							if(!empty($_POST['q_biotype'])){
+								$query = $query . " AND gene_biotype LIKE '%" . $_POST['q_biotype'] . "%'";
+							}
+							
+							if(!empty($_POST['q_prot_name'])){
+								$query = $query . " AND gene_biotype LIKE '%" . $_POST['q_prot_name'] . "%'";
+							}
+							
+							if(!empty($_POST['q_genome_name'])){
+								$query = $query . " AND genome.nom_genome LIKE '%" . $_POST['q_genome_name'] . "%'";
+							}
+							
+							if(!empty($_POST['q_description'])){
+								$query = $query . " AND cds.description LIKE '%" . $_POST['q_description'] . "%'";
+							}
+
+							$query = $query . ";";
+						}
+					?>
 			</div>
 
-			<?php
-				echo $query;			
-			?>
 
-			<! Résultat de la query sous forme de tableau>
 			<div class = "scrollable_div">
-				<table class="demo">
+				<table class="demo", style = "font-size = 0.5;">
+
+					<?php
+	
+							if(isset($_POST['query_gene']) or isset($_POST['query_gene']) or isset($_POST['query_genome'])){
+							connect_db();
+							$query_results = pg_query($GLOBALS['db_conn'], $query) or die ("ERROR");
+	
+							while ($line = pg_fetch_array($query_results, null, PGSQL_ASSOC)) {
+								echo "\t<tr>\n";
+								foreach ($line as $col_value) {
+									echo "\t<td>$col_value</td>\n";
+								}
+								echo "\t</tr>\n";
+							}
+							pg_free_result($query_results);
+							close_db();
+						}
+					?>
+
 				</table>
 			</div>
 
@@ -249,11 +289,9 @@
 			</div>
 
 		</main>
-
+		<?php
+			$_POST = array();
+		?>
 
 	</body>
 </html>
-
-<?php
-	$_POST = array();
-?>
