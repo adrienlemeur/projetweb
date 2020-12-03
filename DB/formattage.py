@@ -31,7 +31,7 @@ dgenome={"listeGenome":[]}
 
 for genome in fileType["adn"] :
 	
-	fichier=open("../data/"+genome) #VERIFIER LE CHEMIN !
+	fichier=open("/home/ombeline/Documents/ProjetWeb/data/"+genome) #VERIFIER LE CHEMIN !
 	lignes=fichier.readlines() #lignes contient toutes les lignes du fichier
 	fichier.close()
 	
@@ -72,7 +72,7 @@ dCDS={"listeCDSfile":[]}
 
 for cdsFile in fileType["cds"] :
 	
-	fichier=open("../data/"+cdsFile) #VERIFIER LE CHEMIN !
+	fichier=open("/home/ombeline/Documents/ProjetWeb/data/"+cdsFile) #VERIFIER LE CHEMIN !
 	lignes=fichier.readlines() 
 	fichier.close()
 	
@@ -98,6 +98,7 @@ for cdsFile in fileType["cds"] :
 			
 			gene=''
 			gene_biotype=''
+			gene_symbol=''
 			description=''
 			des=False
 			
@@ -121,6 +122,7 @@ for cdsFile in fileType["cds"] :
 			
 			#enlever les ";" de la description (mortels pour le csv)
 			description=description.replace(";",",")
+			#description=description.replace("'"," ") #pour ne pas que ça cause des erreurs dans le dump DB
 			
 			dCDS[cdsFile][cds]={'chromosome':chromosome, 'seq_start':seq_start, 'seq_end':seq_end, 'gene':gene, 'gene_biotype':gene_biotype, 'gene_symbol':gene_symbol, 'description': description, 'nom_genome':nom_genome}
 			
@@ -163,7 +165,7 @@ dPEP={"listePEPfile":[]}
 
 for pepFile in fileType["pep"] :
 	
-	fichier=open("../data/"+pepFile) #VERIFIER LE CHEMIN !
+	fichier=open("/home/ombeline/Documents/ProjetWeb/data/"+pepFile) #VERIFIER LE CHEMIN !
 	lignes=fichier.readlines() 
 	fichier.close()
 	
