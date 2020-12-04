@@ -290,7 +290,6 @@
 										echo "<td class = \"query_head\">Génome</td>";
 									}
 									if($_SESSION['last_query'] == "prot"){
-									#cds.nom_cds, cds.gene, genome.nom_genome, genome.espece
 										echo "<td class = \"query_head\">CDS</td>";
 										echo "<td class = \"query_head\">Génome</td>";
 										echo "<td class = \"query_head\">Espèce</td>";
@@ -336,17 +335,66 @@
 
 							$query = "SELECT * FROM db_genome.genome as genome WHERE genome.nom_genome = '" . $_POST['primary_key'] . "';";
 							$look_it_up = pg_query($GLOBALS['db_conn'], $query) or die ("ERROR");
+							$answer = pg_fetch_array($look_it_up, null, PGSQL_ASSOC);
 
+							?>
+							<br><br>
+
+							<div class = 'detail_query'>
+								<div class = "detail_query_attributes">Nom du génome :</div>
+								<textarea class = 'detail_query_output' disabled rows = 1 col = 1><?php echo array_values($answer)[0];?></textarea>
+							</div>
+
+							<div class = 'detail_query'>
+								<div class = "detail_query_attributes">Espèce :</div>
+								<textarea class = 'detail_query_output' disabled rows = 2 col = 1><?php echo array_values($answer)[2];?></textarea>
+							</div>
+
+							<div class = 'detail_query'>
+								<div class = "detail_query_attributes">Séquence :</div>
+								<textarea class = 'detail_query_output' disabled rows = 5 col = 1><?php echo substr(array_values($answer)[1], 0, 100); ?></textarea>
+							</div>
+
+
+							<?php
 						}
 						if($_SESSION['last_query'] == 'gene'){
 							$query = "SELECT * FROM db_genome.cds as cds WHERE cds.nom_cds = '" . $_POST['primary_key'] . "';";
 							$look_it_up = pg_query($GLOBALS['db_conn'], $query) or die ("ERROR");
+							$answer = pg_fetch_array($look_it_up, null, PGSQL_ASSOC);
+							
+							?>
+							<br><br>
 
+							<div class = 'detail_query'>
+								<div class = "detail_query_attributes"> Nom du génome :</div>
+								<textarea class = 'detail_query_output' disabled rows = 1 col = 1><?php echo array_values($answer)[0];?></textarea>
+							</div>
+
+							<div class = 'detail_query'>
+								<div class = "detail_query_attributes"> Chromosome :</div>
+								<textarea class = 'detail_query_output' disabled rows = 1 col = 1><?php echo array_values($answer)[1];?></textarea>
+							</div>
+
+							<div class = 'detail_query'>
+								<div class = "detail_query_attributes"> Start :</div>
+								<textarea class = 'detail_query_output' disabled rows = 1 col = 1><?php echo array_values($answer)[2];?></textarea>
+							</div>
+
+							<div class = 'detail_query'>
+								<div class = "detail_query_attributes"> Chromosome :</div>
+								<textarea class = 'detail_query_output' disabled rows = 1 col = 1><?php echo array_values($answer)[3];?></textarea>
+							</div>
+
+
+
+							<?php
 						}
 						if($_SESSION['last_query'] == 'prot'){
 							$query = "SELECT * FROM db_genome.pep as pep WHERE pep.transcript = '" . $_POST['primary_key'] . "';";
-							echo $query;
 							$look_it_up = pg_query($GLOBALS['db_conn'], $query) or die ("ERROR");
+							$line = pg_fetch_array($look_it_up, null, PGSQL_ASSOC);
+
 						}
 
 					}

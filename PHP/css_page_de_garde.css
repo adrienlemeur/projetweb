@@ -32,7 +32,7 @@ body
 .input_inscription_form {
 	font-size: 1em;
 	width: 50%;
-	float:right;
+	float: right;
 	line-height: 1.5em;
 	margin-top: 2px;
 }
@@ -70,13 +70,13 @@ body
 }
 
 .menu_horizontal li a:hover, #navigation li a:focus, #navigation li a:active {
-	background:red;
-	color:yellow;
+	background: red;
+	color: yellow;
 	text-decoration: underline;
 }
 
 .query_menu {
-	float:left;
+	float: left;
 	background-color:blue;
 	height: 32vw;
 	width: 27vw;
@@ -90,13 +90,10 @@ body
 }
 
 .text_query_area_form {
-	float:right;
+	float: right;
 	margin-right:5%;
 	width: 45%;
 	margin-bottom:2%;
-}
-.query_table{
-
 }
 
 .query_head {
@@ -104,21 +101,47 @@ body
 	width:100%;
 	text-align: center;
 
-	color:black;
-	background-color:white;
+	color: black;
+	background-color: white;
 }
 
 .query_line {
 	font-size:0.8em;
 	width:100%;
-	background-color:grey;
+	background-color: grey;
 }
 
 .scrollable_div{
-	float:left;
-	background-color:red;
+	float: left;
+	background-color: red;
 	height: 80vh;
 	width: 35%;
 	margin-left: 1%;
-	overflow:auto;
+	overflow: auto;
+}
+
+.detail_query {
+	font-weight: bolder;
+	font-size:1em;
+	margin-left:2%;
+	margin-bottom:4%;
+
+    white-space: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+
+}
+.detail_query_attributes {
+	float: left;
+}
+
+.detail_query_output {
+	font-size:1em;
+	
+	float: right;
+	margin-right:2%;
+	
+	resize: none;
+	text-align: center;
+
 }

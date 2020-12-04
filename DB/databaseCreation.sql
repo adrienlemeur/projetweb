@@ -37,7 +37,7 @@ CREATE SCHEMA db_genome
 		transcript_biotype VARCHAR(20),
 		seq_pep TEXT NOT NULL
 	)
-	
+
 	CREATE TABLE attribution_annotateur(
 		nom_genome VARCHAR(36) REFERENCES genome,
 		nom_cds VARCHAR(15) REFERENCES cds,
