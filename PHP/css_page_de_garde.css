@@ -103,7 +103,9 @@ body
 	font-size:1em;
 	width:100%;
 	text-align: center;
-	color:grey;
+
+	color:black;
+	background-color:white;
 }
 
 .query_line {

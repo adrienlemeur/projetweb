@@ -334,17 +334,18 @@
 					if(isset($_POST['primary_key'])){
 						if($_SESSION['last_query'] == 'genome'){
 
-							$query = "SELECT * FROM db_genome.genome as genome WHERE genome.nom_genome = '" . $_POST['primary_key'] . "';" ;
+							$query = "SELECT * FROM db_genome.genome as genome WHERE genome.nom_genome = '" . $_POST['primary_key'] . "';";
 							$look_it_up = pg_query($GLOBALS['db_conn'], $query) or die ("ERROR");
 
 						}
 						if($_SESSION['last_query'] == 'gene'){
-							$query = "SELECT * FROM db_genome.cds as cds WHERE cds.nom_cds = '" . $_POST['primary_key'] . "';" ;
+							$query = "SELECT * FROM db_genome.cds as cds WHERE cds.nom_cds = '" . $_POST['primary_key'] . "';";
 							$look_it_up = pg_query($GLOBALS['db_conn'], $query) or die ("ERROR");
 
 						}
 						if($_SESSION['last_query'] == 'prot'){
-							$query = "SELECT * FROM db_genome.prot as prot WHERE cds.nom_cds = '" . $_POST['primary_key'] . "';" ;
+							$query = "SELECT * FROM db_genome.pep as pep WHERE pep.transcript = '" . $_POST['primary_key'] . "';";
+							echo $query;
 							$look_it_up = pg_query($GLOBALS['db_conn'], $query) or die ("ERROR");
 						}
 
