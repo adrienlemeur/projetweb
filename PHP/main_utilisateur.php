@@ -213,6 +213,11 @@
 							</div>
 
 							<div style = "margin-bottom:2%;">
+								<label class = "text_query_form">Nom Gène</label>
+								<input class = "text_query_area_form" type = "text" name="q_gene_name">
+							</div>
+
+							<div style = "margin-bottom:2%;">
 								<label class = "text_query_form">Biotype</label>
 								<input class = "text_query_area_form" type = "text" name="q_biotype">
 							</div>
@@ -226,7 +231,7 @@
 								<label class = "text_query_form">Description</label>
 								<input class = "text_query_area_form" type = "text" name="q_description">
 							</div>
-							
+
 							<div>
 								<label class = "text_query_form">Séquence</label>
 								<textarea class = "text_query_area_form" name="q_sequence" rows="10"> </textarea>
@@ -240,10 +245,13 @@
 						if(isset($_POST['query_prot'])){
 							$_SESSION['last_query'] = "prot";
 
-							$_SESSION['query'] = "SELECT pep.transcript, genome.nom_genome, genome.espece FROM db_genome.genome as genome, db_genome.cds as cds, db_genome.pep as pep WHERE cds.nom_genome = genome.nom_genome AND pep.nom_cds  = cds.nom_cds";
+							$_SESSION['query'] = "SELECT pep.nom_cds, genome.nom_genome, genome.espece FROM db_genome.genome as genome, db_genome.cds as cds, db_genome.pep as pep WHERE cds.nom_genome = genome.nom_genome AND pep.nom_cds  = cds.nom_cds";
 
 							if(!empty($_POST['q_cds_name'])){
 								$_SESSION['query'] = $_SESSION['query'] . " AND pep.nom_cds LIKE '%" . $_POST['q_cds_name'] . "%'";
+							}
+							if(!empty($_POST['q_gene_name'])){
+								$_SESSION['query'] = $_SESSION['query'] . " AND gene LIKE '%" . $_POST['q_gene_name'] . "%'";
 							}
 							
 							if(!empty($_POST['q_biotype'])){
@@ -256,6 +264,10 @@
 							
 							if(!empty($_POST['q_description'])){
 								$_SESSION['query'] = $_SESSION['query'] . " AND cds.description LIKE '%" . $_POST['q_description'] . "%'";
+							}
+
+							if(!empty($_POST['q_sequence'])){
+								$_SESSION['query'] = $_SESSION['query'] . " AND seq_pep LIKE '%" . $_POST['q_sequence'] . "%'";
 							}
 
 							$_SESSION['query'] = $_SESSION['query'] . ";";
@@ -337,7 +349,7 @@
 							<br><br>
 
 							<div class = 'detail_query'>
-								<div class = "detail_query_attributes">Nom du génome :</div>
+								<div class = "detail_query_attributes">Génome :</div>
 								<textarea class = 'detail_query_output' disabled rows = 1><?php echo array_values($answer)[0];?></textarea>
 							</div>
 
@@ -363,7 +375,7 @@
 							<br>
 
 							<div class = 'detail_query'>
-								<div class = "detail_query_attributes">Nom du gène</div>
+								<div class = "detail_query_attributes">Gène</div>
 								<textarea class = 'detail_query_output' disabled rows = 1><?php echo array_values($answer)[4];?></textarea>
 							</div>
 
@@ -415,16 +427,16 @@
 							<?php
 						}
 						if($_SESSION['last_query'] == 'prot'){
-							$query = "SELECT * FROM db_genome.pep as pep WHERE pep.transcript = '" . $_SESSION['primary_key'] . "';";
-							$look_it_up = pg_query($GLOBALS['db_conn'], $query) or die ("ERROR");
-							$line = pg_fetch_array($look_it_up, null, PGSQL_ASSOC);
 
+							$query = "SELECT * FROM db_genome.pep as pep WHERE pep.nom_cds = '" . $_SESSION['primary_key'] . "';";
+							$look_it_up = pg_query($GLOBALS['db_conn'], $query) or die ("ERROR");
+							$answer = pg_fetch_array($look_it_up, null, PGSQL_ASSOC);
 							?>
 							<br>
 
 							<div class = 'detail_query'>
-								<div class = "detail_query_attributes">Nom du gène</div>
-								<textarea class = 'detail_query_output' disabled rows = 1><?php echo array_values($answer)[4];?></textarea>
+								<div class = "detail_query_attributes">Gène</div>
+								<textarea class = 'detail_query_output' disabled rows = 1><?php echo array_values($answer)[1];?></textarea>
 							</div>
 
 							<div class = 'detail_query'>
@@ -434,42 +446,12 @@
 
 							<div class = 'detail_query'>
 								<div class = "detail_query_attributes">Biotype</div>
-								<textarea class = 'detail_query_output' disabled rows = 1><?php echo array_values($answer)[5];?></textarea>
-							</div>
-
-							<div class = 'detail_query'>
-								<div class = "detail_query_attributes">Sigle</div>
-								<textarea class = 'detail_query_output' disabled rows = 1><?php echo array_values($answer)[6];?></textarea>
-							</div>
-
-							<div class = 'detail_query'>
-								<div class = "detail_query_attributes">Description</div>
-								<textarea class = 'detail_query_output' disabled rows = 3><?php echo array_values($answer)[7];?></textarea>
-							</div>
-
-							<div class = 'detail_query'>
-								<div class = "detail_query_attributes">Nom du génome :</div>
-								<textarea class = 'detail_query_output' disabled rows = 1><?php echo array_values($answer)[0];?></textarea>
-							</div>
-
-							<div class = 'detail_query'>
-								<div class = "detail_query_attributes">Chromosome :</div>
-								<textarea class = 'detail_query_output' disabled rows = 1><?php echo array_values($answer)[1];?></textarea>
-							</div>
-
-							<div class = 'detail_query'>
-								<div class = "detail_query_attributes">Start :</div>
 								<textarea class = 'detail_query_output' disabled rows = 1><?php echo array_values($answer)[2];?></textarea>
 							</div>
 
 							<div class = 'detail_query'>
-								<div class = "detail_query_attributes">Stop :</div>
-								<textarea class = 'detail_query_output' disabled rows = 1><?php echo array_values($answer)[3];?></textarea>
-							</div>
-
-							<div class = 'detail_query'>
 								<div class = "detail_query_attributes">Séquence :</div>
-								<textarea class = 'detail_query_output' disabled rows = 5><?php echo substr(array_values($answer)[8], 0); ?></textarea>
+								<textarea class = 'detail_query_output' disabled rows = 5><?php echo substr(array_values($answer)[3], 0); ?></textarea>
 							</div>
 
 							<?php
