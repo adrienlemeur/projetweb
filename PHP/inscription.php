@@ -78,6 +78,7 @@
 			</div>
 
 			<button type="submit" name = "submit_inscription_button" class="btn btn-default" style = "font-size:1em;margin-left:60%"> Inscription </button>
+
 		</form>
 			<?php
 
