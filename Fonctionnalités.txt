@@ -1,10 +1,10 @@
 ﻿Fonctionnalités obligatoires :
-	Connection d’un utilisateur
-	Droits des différents types d’utilisateurs -> Stockage d’une variable en PHP qui va être vérifiée dans les pages
-	Lancer une recherche sur les attributs (Utilisateur)
+	FAIT Connection d’un utilisateur
+	FAIT Droits des différents types d’utilisateurs -> Stockage d’une variable en PHP qui va être vérifiée dans les pages
+	FAIT Lancer une recherche sur les attributs (Utilisateur)
 	Visualisation d’un génome
 	Extraction des données (téléchargement)
-	Comparaison et alignement de séquence
+	FAIT Comparaison et alignement de séquence
 	Interrogation d’autre bases de données : NCBI, PFAM
 	Distinguer génomes validés et non validés
 	Affecter les séquences à annoter
