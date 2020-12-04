@@ -95,7 +95,22 @@ body
 	width: 45%;
 	margin-bottom:2%;
 }
+.query_table{
 
+}
+
+.query_head {
+	font-size:1em;
+	width:100%;
+	text-align: center;
+	color:grey;
+}
+
+.query_line {
+	font-size:0.8em;
+	width:100%;
+	background-color:grey;
+}
 
 .scrollable_div{
 	float:left;

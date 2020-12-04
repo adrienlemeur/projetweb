@@ -11,29 +11,38 @@
 		<?php
 			include_once('functions/connection.php');
 			page_init();
+			/*
+			Variable session :
+			last_query -> conserver l'affichage du dernier formulaire de recherche utilisé (gène, génome ou prot)
+						
+			*/
+			
 		?>
 
 		</div>
 
 			<ul class = "menu_horizontal" style="float:right;">
 				<li> <a href="main_utilisateur.php">Espace Utilisateur</a> </li>
-				<li> <a href="espace_annotateur.php">Espace Annotateur</a> </li>
-				<li> <a href="espace_validateur.php">Espace Validateur</a> </li>
+				<?php if($_SESSION['role'] == 'annotateur'):?> <li> <a href="espace_annotateur.php">Espace Annotateur</a> </li> <?php endif; ?>
+				<?php if($_SESSION['role'] == 'validateur'):?> <li> <a href="espace_validateur.php">Espace Validateur</a> </li> <?php endif; ?>
 				<li> <a href="deconnection.php">Déconnexion</a> </li>
 			</ul>
 
 		<div style="height:10vh;"> </div>
 
 		<main>
-
+			<!--
+				
+			-->
 			<div class = "query_menu">
 				<label class = "text_inscription_form" style="font-weight: bold;">Recherche</label>
 				<div style="height:5%;"></div>
-
 				<form method = "post" class = "text_query_form">
 					<div style="margin-bottom:4%;">
 						<label class = "text_query_form">Type de recherche</label>
-						<select name= "select_query_type" class = "text_query_area_form" size = "1" onchange="this.form.submit();">
+						<select name= "select_query_type" class = "text_query_area_form" size = "1" onchange="this.form.submit();"
+							value = <?php echo $_SESSION['last_query']; ?>>
+
 							<option disabled selected value><?php echo $_POST["select_query_type"]?></option>
 							<option value="genome">Génome</option>
 							<option value="gene">Gène</option>
@@ -42,7 +51,7 @@
 					</div>
 				</form>
 
-				<?php if(isset($_POST["select_query_type"]) && ($_POST["select_query_type"] == 'genome')): ?>
+				<?php if(isset($_POST["select_query_type"]) and ($_POST["select_query_type"] == 'genome')):?>
 					<form method = "post" action="<?php echo $_SERVER['PHP_SELF']?>">
 						<div style = "margin-bottom:2%;">
 							<label class = "text_query_form">Nom Génome</label>
@@ -64,28 +73,30 @@
 					</form>
 
 				<?php endif;
-
+				
 				if(isset($_POST['query_genome'])){
+						$_SESSION['last_query'] = "genome";
+						$_SESSION['query'] = "SELECT nom_genome, espece FROM db_genome.genome";
 
-						$query = "SELECT nom_genome, espece FROM db_genome.genome";
-						
+						#on ajoute WHERE 1=1 (qui est toujours vrai) pour ne pas avoir à gérer la présence ou l'absence de AND avant chaque condition dans la query
+
 						if(!empty($_POST['q_genome_name']) or !empty($_POST['q_species']) or !empty($_POST['q_sequence'])){
-							$query = $query . " WHERE 1=1";
+							$_SESSION['query'] = $_SESSION['query'] . " WHERE 1=1";
 
 							if(isset($_POST['q_genome_name'])){
-								$query = $query . " AND nom_genome LIKE '%" . $_POST['q_genome_name'] . "%'";
+								$_SESSION['query'] = $_SESSION['query'] . " AND nom_genome LIKE '%" . $_POST['q_genome_name'] . "%'";
 							}
 							
 							if(isset($_POST['q_species'])){
-								$query = $query . " AND espece LIKE '%" . $_POST['q_species'] . "%'";
+								$_SESSION['query'] = $_SESSION['query'] . " AND espece LIKE '%" . $_POST['q_species'] . "%'";
 							}
 							
 							if(isset($_POST['q_sequence'])){
-								$query = $query . " AND seq LIKE '%" . $_POST['q_sequence']. "%'";
+								$_SESSION['query'] = $_SESSION['query'] . " AND seq LIKE '%" . $_POST['q_sequence']. "%'";
 							}
 						}
 
-						$query = $query . ";";
+						$_SESSION['query'] = $_SESSION['query'] . ";";
 					}
 				?>
 				
@@ -149,45 +160,46 @@
 				<?php endif;
 
 				if(isset($_POST['query_gene'])){
+						$_SESSION['last_query'] = "gene";
 
-						$query = "SELECT nom_cds, gene_symbol, genome.nom_genome FROM db_genome.cds as cds, db_genome.genome as genome WHERE cds.nom_genome = genome.nom_genome";
+						$_SESSION['query'] = "SELECT nom_cds, gene_symbol, genome.nom_genome FROM db_genome.cds as cds, db_genome.genome as genome WHERE cds.nom_genome = genome.nom_genome";
 
 						if(!empty($_POST['q_gene_name'])){
-							$query = $query . " AND gene LIKE '%" . $_POST['q_gene_name'] . "%'";
+							$_SESSION['query'] = $_SESSION['query'] . " AND gene LIKE '%" . $_POST['q_gene_name'] . "%'";
 						}
 
 						if(!empty($_POST['q_cds_name'])){
-							$query = $query . " AND nom_cds LIKE '%" . $_POST['q_cds_name'] . "%'";
+							$_SESSION['query'] = $_SESSION['query'] . " AND nom_cds LIKE '%" . $_POST['q_cds_name'] . "%'";
 						}
 						
 						if(!empty($_POST['q_species'])){
-							$query = $query . " AND genome.espece LIKE '%" . $_POST['q_species'] . "%'";
+							$_SESSION['query'] = $_SESSION['query'] . " AND genome.espece LIKE '%" . $_POST['q_species'] . "%'";
 						}
 
 						if(!empty($_POST['q_symbol'])){
-							$query = $query . " AND cds.gene_symbol LIKE '%" . $_POST['q_symbol'] . "%'";
+							$_SESSION['query'] = $_SESSION['query'] . " AND cds.gene_symbol LIKE '%" . $_POST['q_symbol'] . "%'";
 						}
 
 						if(!empty($_POST['q_biotype'])){
-							$query = $query . " AND gene_biotype LIKE '%" . $_POST['q_biotype'] . "%'";
+							$_SESSION['query'] = $_SESSION['query'] . " AND gene_biotype LIKE '%" . $_POST['q_biotype'] . "%'";
 						}
 
 						if(!empty($_POST['q_genome_name'])){
-							$query = $query . " AND cds.nom_genome LIKE '%" . $_POST['q_genome_name'] . "%'";
+							$_SESSION['query'] = $_SESSION['query'] . " AND cds.nom_genome LIKE '%" . $_POST['q_genome_name'] . "%'";
 						}
 
 						if(!empty($_POST['q_description'])){
-							$query = $query . " AND description LIKE '%" . $_POST['q_description'] . "%'";
+							$_SESSION['query'] = $_SESSION['query'] . " AND description LIKE '%" . $_POST['q_description'] . "%'";
 						}
 
 						if(!empty($_POST['q_start']) && !empty($_POST['q_stop'])){
-							$query = $query . " AND seq_start > '" . $_POST['q_start'] . "' AND seq_end < '" . $_POST['q_stop'] . "'";
+							$_SESSION['query'] = $_SESSION['query'] . " AND seq_start > '" . $_POST['q_start'] . "' AND seq_end < '" . $_POST['q_stop'] . "'";
 						}
 
 						if(!empty($_POST['q_sequence'])){
-							$query = $query . " AND cds_sequence LIKE '%" . $_POST['q_sequence'] . "%'";
+							$_SESSION['query'] = $_SESSION['query'] . " AND cds_sequence LIKE '%" . $_POST['q_sequence'] . "%'";
 						}
-						$query = $query . ";";
+						$_SESSION['query'] = $_SESSION['query'] . ";";
 					}
 
 				?>
@@ -231,67 +243,115 @@
 					</div>
 					<?php endif;
 						if(isset($_POST['query_prot'])){
-					
-							$query = "SELECT cds.nom_cds, cds.gene, genome.nom_genome, genome.espece FROM db_genome.genome as genome, db_genome.cds as cds, db_genome.pep as pep WHERE cds.nom_genome = genome.nom_genome AND pep.nom_cds  = cds.nom_cds";
+							$_SESSION['last_query'] = "prot";
+
+							$_SESSION['query'] = "SELECT pep.transcript, genome.nom_genome, genome.espece FROM db_genome.genome as genome, db_genome.cds as cds, db_genome.pep as pep WHERE cds.nom_genome = genome.nom_genome AND pep.nom_cds  = cds.nom_cds";
 
 							if(!empty($_POST['q_cds_name'])){
-								$query = $query . " AND pep.nom_cds LIKE '%" . $_POST['q_cds_name'] . "%'";
+								$_SESSION['query'] = $_SESSION['query'] . " AND pep.nom_cds LIKE '%" . $_POST['q_cds_name'] . "%'";
 							}
 							
 							if(!empty($_POST['q_biotype'])){
-								$query = $query . " AND gene_biotype LIKE '%" . $_POST['q_biotype'] . "%'";
+								$_SESSION['query'] = $_SESSION['query'] . " AND gene_biotype LIKE '%" . $_POST['q_biotype'] . "%'";
 							}
 							
 							if(!empty($_POST['q_prot_name'])){
-								$query = $query . " AND gene_biotype LIKE '%" . $_POST['q_prot_name'] . "%'";
+								$_SESSION['query'] = $_SESSION['query'] . " AND gene_biotype LIKE '%" . $_POST['q_prot_name'] . "%'";
 							}
 							
 							if(!empty($_POST['q_genome_name'])){
-								$query = $query . " AND genome.nom_genome LIKE '%" . $_POST['q_genome_name'] . "%'";
+								$_SESSION['query'] = $_SESSION['query'] . " AND genome.nom_genome LIKE '%" . $_POST['q_genome_name'] . "%'";
 							}
 							
 							if(!empty($_POST['q_description'])){
-								$query = $query . " AND cds.description LIKE '%" . $_POST['q_description'] . "%'";
+								$_SESSION['query'] = $_SESSION['query'] . " AND cds.description LIKE '%" . $_POST['q_description'] . "%'";
 							}
 
-							$query = $query . ";";
+							$_SESSION['query'] = $_SESSION['query'] . ";";
 						}
 					?>
 			</div>
 
 
 			<div class = "scrollable_div">
-				<table class="demo", style = "font-size = 0.5;">
+					<table class="", style = "font-size = 0.5;">
+						<?php
+							if(isset($_SESSION['query'])){
 
-					<?php
-	
-							if(isset($_POST['query_gene']) or isset($_POST['query_gene']) or isset($_POST['query_genome'])){
-							connect_db();
-							$query_results = pg_query($GLOBALS['db_conn'], $query) or die ("ERROR");
-	
-							while ($line = pg_fetch_array($query_results, null, PGSQL_ASSOC)) {
-								echo "\t<tr>\n";
-								foreach ($line as $col_value) {
-									echo "\t<td>$col_value</td>\n";
+								echo "<tr>";
+									if($_SESSION['last_query'] == "genome"){
+											echo "<td class = \"query_head\">Génome</td>";
+											echo "<td class = \"query_head\">Espèce</td>";
+									}
+
+									if($_SESSION['last_query'] == "gene"){
+										echo "<td class = \"query_head\">CDS</td>";
+										echo "<td class = \"query_head\">Gène</td>";
+										echo "<td class = \"query_head\">Génome</td>";
+									}
+									if($_SESSION['last_query'] == "prot"){
+									#cds.nom_cds, cds.gene, genome.nom_genome, genome.espece
+										echo "<td class = \"query_head\">CDS</td>";
+										echo "<td class = \"query_head\">Génome</td>";
+										echo "<td class = \"query_head\">Espèce</td>";
+									}
+								echo "</tr>";
+
+								connect_db();
+
+								$query_results = pg_query($GLOBALS['db_conn'], $_SESSION['query']) or die ("ERROR");
+
+								while ($line = pg_fetch_array($query_results, null, PGSQL_ASSOC)) {
+
+									echo "<tr>";
+									foreach ($line as $col_value) {
+										echo "<td class = \"query_line\">$col_value</td>";
+									}
+										?>
+										<td>
+
+											<form action="<?php echo $_SERVER['PHP_SELF']?>" method="POST">
+												<button type = "submit" style = "font-size:1em;" name = "primary_key"
+												value = "<?php echo array_values($line)[0];?>" type="button">Voir</button>
+											</form>
+
+										<td>
+										<?php
+
 								}
-								echo "\t</tr>\n";
-							}
-							pg_free_result($query_results);
-							close_db();
-						}
-					?>
 
-				</table>
+								pg_free_result($query_results);
+								close_db();
+							}
+						?>
+					</table>
+				</div>
 			</div>
 
-			<! Détail sur le résultat de la query sélectionné>
 			<div class = "scrollable_div">
+				<?php
+					connect_db();
+					if(isset($_POST['primary_key'])){
+						if($_SESSION['last_query'] == 'genome'){
+							$query = "SELECT * FROM db_genome.genome as genome WHERE genome.nom_genome = " . $_POST['primary_key'] . ";" ;
+							echo $query;
+						}
+						if($_SESSION['last_query'] == 'gene'){
+							$query = "SELECT * FROM db_genome.cds as cds WHERE cds.nom_cds = " . $_POST['primary_key'] . ";" ;
+							echo $query;
+						}
+						if($_SESSION['last_query'] == 'prot'){
+							$query = "SELECT * FROM db_genome.prot as prot WHERE cds.nom_cds = " . $_POST['primary_key'] . ";" ;
+							echo $query;
+						}
+					}
+					close_db();
+
+				
+				?>
 			</div>
 
 		</main>
-		<?php
-			$_POST = array();
-		?>
 
 	</body>
 </html>
