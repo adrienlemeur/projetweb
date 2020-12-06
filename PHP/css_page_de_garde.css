@@ -1,8 +1,8 @@
 body
 {
 	font: 1.25em "Trebuchet MS",Arial,sans-serif;
-	background-color: FireBrick;
-	color: White;
+	background-color: #00004C;
+	color: #fff600;
 }
 
 .main_text{
@@ -38,7 +38,7 @@ body
 }
 
 .text_inscription_form{
-	color: white;
+	color: #fff600;
 	line-height: 2em;
 	margin-left: 10%;
 }
@@ -77,13 +77,13 @@ body
 
 .query_menu {
 	float: left;
-	background-color:blue;
+	background-color: #4C4CB2;
 	height: 32vw;
 	width: 27vw;
 }
 
 .text_query_form {
-	color: #fff;
+	color: #fff600;
 	margin-left: 3%;
 	font-size:0.9em;
 	margin-bottom:2%;
@@ -98,33 +98,42 @@ body
 
 .query_head {
 	font-size:1em;
-	width:100%;
 	text-align: center;
-
-	color: black;
-	background-color: white;
+	color: #fffca1;
+	background-color: #000066;
 }
 
 .query_line {
 	font-size:0.8em;
 	width:100%;
-	background-color: grey;
+	background-color: #000066;
+	color: #fff600;
 }
 
-.scrollable_div{
+.answer_menu{
 	float: left;
-	background-color: red;
+	background-color: #4C4CB2;
 	height: 80vh;
 	width: 35%;
 	margin-left: 1%;
 	overflow: auto;
 }
 
+.detail_menu{
+	float: left;
+	background-color: #000066;
+	height: 80vh;
+	width: 35%;
+	margin-left: 1%;
+	overflow: auto;
+}
+
+
 .detail_query {
 	font-weight: bolder;
 	font-size:1em;
 	margin-left:2%;
-	margin-bottom:1%;
+	margin-bottom:2%;
 
     white-space: nowrap;
     overflow-x: auto;
@@ -133,14 +142,38 @@ body
 }
 .detail_query_attributes {
 	float: left;
+	color:#fffca1;
 }
 
 .detail_query_output {
 	font-size:1em;
+	background-color: #4C4CB2;
+	color: #fff600;
 	
 	float: right;
 	margin-right:2%;
 	
 	resize: none;
 	text-align: center;
+}
+
+.button_foreign_DB {
+	font-size:0.9em;
+	float: left;
+	margin-left: 3%;
+	border-radius: 3px;
+	border: none;
+	padding: 10px 10px 10px 10px;
+	margin:1%;
+	transition-duration: 0.2s;
+	background-color: #000066;
+	text-decoration: none;
+	color: #fffca1;
+	font-weight: bold;
+}
+
+.button_foreign_DB:hover {
+  background-color: #9c7248;
+  color: black;
+  text-decoration: none;
 }

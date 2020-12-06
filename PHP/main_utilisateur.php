@@ -14,7 +14,6 @@
 			/*
 			Variable session :
 			last_query -> conserver l'affichage du dernier formulaire de recherche utilisé (gène, génome ou prot)
-						
 			*/
 			
 		?>
@@ -40,10 +39,8 @@
 				<form method = "post" class = "text_query_form">
 					<div style="margin-bottom:4%;">
 						<label class = "text_query_form">Type de recherche</label>
-						<select name= "select_query_type" class = "text_query_area_form" size = "1" onchange="this.form.submit();"
-							value = <?php echo $_SESSION['last_query']; ?>>
-
-							<option disabled selected value><?php echo $_POST["select_query_type"]?></option>
+						<select name= "select_query_type" class = "text_query_area_form" size = "1" onchange="this.form.submit();">
+							<option disabled selected value><?php echo $_POST["select_query_type"] ?></option>
 							<option value="genome">Génome</option>
 							<option value="gene">Gène</option>
 							<option value="prot">Protéine</option>
@@ -51,7 +48,8 @@
 					</div>
 				</form>
 
-				<?php if(isset($_POST["select_query_type"]) and ($_POST["select_query_type"] == 'genome')):?>
+				<?php if($_POST["select_query_type"] == "genome"):?>
+
 					<form method = "post" action="<?php echo $_SERVER['PHP_SELF']?>">
 						<div style = "margin-bottom:2%;">
 							<label class = "text_query_form">Nom Génome</label>
@@ -75,7 +73,7 @@
 				<?php endif;
 				
 				if(isset($_POST['query_genome'])){
-						$_SESSION['last_query'] = "genome";
+
 						$_SESSION['query'] = "SELECT nom_genome, espece FROM db_genome.genome";
 
 						#on ajoute WHERE 1=1 (qui est toujours vrai) pour ne pas avoir à gérer la présence ou l'absence de AND avant chaque condition dans la query
@@ -100,7 +98,7 @@
 					}
 				?>
 				
-				<?php if (isset($_POST["select_query_type"]) && ($_POST["select_query_type"] == 'gene')): ?>
+				<?php if($_POST["select_query_type"] == "gene"): ?>
 
 					<div class = "query_menu">
 						<form method = "post" action="<?php echo $_SERVER['PHP_SELF']?>">
@@ -160,7 +158,6 @@
 				<?php endif;
 
 				if(isset($_POST['query_gene'])){
-						$_SESSION['last_query'] = "gene";
 
 						$_SESSION['query'] = "SELECT nom_cds, gene, gene_symbol, genome.nom_genome FROM db_genome.cds as cds, db_genome.genome as genome WHERE cds.nom_genome = genome.nom_genome";
 
@@ -201,10 +198,9 @@
 						}
 						$_SESSION['query'] = $_SESSION['query'] . ";";
 					}
-
 				?>
 				
-				<?php if (isset($_POST["select_query_type"]) && ($_POST["select_query_type"] == 'prot')): ?>
+				<?php if($_POST["select_query_type"] == "prot"):?>
 					<div id = "query_menu">
 						<form method = "post" action="<?php echo $_SERVER['PHP_SELF']?>">
 							<div style = "margin-bottom:2%;">
@@ -234,7 +230,7 @@
 
 							<div>
 								<label class = "text_query_form">Séquence</label>
-								<textarea class = "text_query_area_form" name="q_sequence" rows="10"> </textarea>
+								<textarea class = "text_query_area_form" name="q_sequence" rows="10"></textarea>
 							</div>
 
 							<div style="height:7.5vw;"></div>
@@ -242,9 +238,9 @@
 						</form>
 					</div>
 					<?php endif;
-						if(isset($_POST['query_prot'])){
-							$_SESSION['last_query'] = "prot";
 
+						if(isset($_POST["query_prot"])){
+							
 							$_SESSION['query'] = "SELECT pep.nom_cds, genome.nom_genome, genome.espece FROM db_genome.genome as genome, db_genome.cds as cds, db_genome.pep as pep WHERE cds.nom_genome = genome.nom_genome AND pep.nom_cds  = cds.nom_cds";
 
 							if(!empty($_POST['q_cds_name'])){
@@ -275,9 +271,12 @@
 					?>
 			</div>
 
+			<?php	if(isset($_POST["query_genome"])){$_SESSION['last_query'] = "genome";}
+					if(isset($_POST["query_gene"])){$_SESSION['last_query'] = "gene";}
+					if(isset($_POST["query_prot"])){$_SESSION['last_query'] = "prot";}	?>
 
-			<div class = "scrollable_div">
-					<table class="", style = "font-size = 0.5;">
+			<div class = "answer_menu">
+					<table>
 						<?php
 							if(isset($_SESSION['query'])){
 
@@ -293,6 +292,7 @@
 										echo "<td class = \"query_head\">Sigle</td>";
 										echo "<td class = \"query_head\">Génome</td>";
 									}
+
 									if($_SESSION['last_query'] == "prot"){
 										echo "<td class = \"query_head\">CDS</td>";
 										echo "<td class = \"query_head\">Génome</td>";
@@ -304,6 +304,7 @@
 
 								$query_results = pg_query($GLOBALS['db_conn'], $_SESSION['query']) or die ("ERROR");
 
+								echo $query;
 								while ($line = pg_fetch_array($query_results, null, PGSQL_ASSOC)) {
 
 									echo "<tr>";
@@ -314,7 +315,7 @@
 										<td>
 
 											<form action="<?php echo $_SERVER['PHP_SELF']?>" method="POST">
-												<button type = "submit" style = "font-size:1em;" name = "primary_key"
+												<button class = "button_foreign_DB" type = "submit" name = "primary_key"
 												value = "<?php echo array_values($line)[0];?>" type="button">Voir</button>
 											</form>
 
@@ -334,12 +335,20 @@
 				</div>
 			</div>
 
-			<div class = "scrollable_div">
+			<div class = "detail_menu">
 				<?php
 					connect_db();
+
+					$blast_base = "https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Put&QUERY=";
+					$blast_prog = "&PROGRAM=";
+					$blast_db = "&DATABASE=";
+					
+					$uniprotkb_query = "https://www.uniprot.org/uniprot/?query=";
+					$uniprotkb_query_score = "&sort=score";
+
 					if(isset($_SESSION['primary_key'])){
 
-						if($_SESSION['last_query'] == 'genome'){
+						if($_SESSION['last_query'] == "genome"){
 
 							$query = "SELECT * FROM db_genome.genome as genome WHERE genome.nom_genome = '" . $_SESSION['primary_key'] . "';";
 							$look_it_up = pg_query($GLOBALS['db_conn'], $query) or die ("ERROR");
@@ -359,14 +368,30 @@
 							</div>
 
 							<div class = 'detail_query'>
-								<div class = "detail_query_attributes">Séquence :</div>
+								<div class = "detail_query_attributes">Séquence (100 premiers nucléotides) :</div>
 								<textarea class = 'detail_query_output' disabled rows = 5><?php echo substr(array_values($answer)[1], 0, 100); ?></textarea>
 							</div>
 
+							<div class = 'detail_query'>
+								<div class = "detail_query_attributes">Rechercher l'ID:</div><br>
+								<a class = "button_foreign_DB" target = "_blank" href = "<?php echo "https://www.ncbi.nlm.nih.gov/assembly/?term=" . array_values($answer)[0]?>">NCBI (Genome)</a>
+							</div>
+								
+							<?php
+								$_SESSION['download'] = "";
+								foreach($answer as $ans) {$_SESSION['download'] = $_SESSION['download'] . $ans . ";";}		
+								$_SESSION['file_name'] = array_values($answer)[0] . ".genome";
+							?>
+
+							<div class = 'detail_query'>
+								<div class = "detail_query_attributes">Télécharger :</div><br>
+								<a class = "button_foreign_DB" href = "functions/download.php">Format GENOME</a>
+							</div>
 
 							<?php
 						}
-						if($_SESSION['last_query'] == 'gene'){
+
+						if($_SESSION['last_query'] == "gene"){
 							$query = "SELECT * FROM db_genome.cds as cds WHERE cds.nom_cds = '" . $_SESSION['primary_key'] . "';";
 							$look_it_up = pg_query($GLOBALS['db_conn'], $query) or die ("ERROR");
 							$answer = pg_fetch_array($look_it_up, null, PGSQL_ASSOC);
@@ -401,7 +426,7 @@
 
 							<div class = 'detail_query'>
 								<div class = "detail_query_attributes">Nom du génome :</div>
-								<textarea class = 'detail_query_output' disabled rows = 1><?php echo array_values($answer)[0];?></textarea>
+								<textarea class = 'detail_query_output' disabled rows = 1><?php echo array_values($answer)[9];?></textarea>
 							</div>
 
 							<div class = 'detail_query'>
@@ -424,9 +449,33 @@
 								<textarea class = 'detail_query_output' disabled rows = 5><?php echo substr(array_values($answer)[8], 0); ?></textarea>
 							</div>
 
+							<div class = 'detail_query'>
+								<div class = "detail_query_attributes">Rechercher l'ID:</div><br>
+								<a class = "button_foreign_DB" target = "_blank" href = "<?php echo "https://www.ncbi.nlm.nih.gov/gene/?term=" . array_values($answer)[4]?>">NCBI (Gene)</a>
+								<a class = "button_foreign_DB" target = "_blank" href = "<?php echo $uniprotkb_query . array_values($answer)[0] . $uniprotkb_query_score?>">Uniprot KB (CDS)</a>
+								<a class = "button_foreign_DB" target = "_blank" href = "<?php echo "https://www.ncbi.nlm.nih.gov/protein/?term=" . array_values($answer)[0]?>">NCBI (CDS)</a>
+							</div>
+
+							<div class = 'detail_query'>
+								<div class = "detail_query_attributes">Rechercher la séquence :</div><br>
+								<a class = "button_foreign_DB" target = "_blank" href = "<?php echo $blast_base . substr(array_values($answer)[8], 0) . $blast_prog . "blastn" . $blast_db . "nr"; ?>">NCBI Protein</a>
+							</div>
+
+							<?php
+								$_SESSION['download'] = "";
+								foreach($answer as $ans) {$_SESSION['download'] = $_SESSION['download'] . $ans . ";";}		
+								$_SESSION['file_name'] = array_values($answer)[4] . ".gene";
+							?>
+
+							<div class = 'detail_query'>
+								<div class = "detail_query_attributes">Télécharger :</div><br>
+								<a class = "button_foreign_DB" href = "functions/download.php">Format GENE</a>
+							</div>
+
+
 							<?php
 						}
-						if($_SESSION['last_query'] == 'prot'){
+						if($_SESSION['last_query'] == "prot"){
 
 							$query = "SELECT * FROM db_genome.pep as pep WHERE pep.nom_cds = '" . $_SESSION['primary_key'] . "';";
 							$look_it_up = pg_query($GLOBALS['db_conn'], $query) or die ("ERROR");
@@ -452,6 +501,28 @@
 							<div class = 'detail_query'>
 								<div class = "detail_query_attributes">Séquence :</div>
 								<textarea class = 'detail_query_output' disabled rows = 5><?php echo substr(array_values($answer)[3], 0); ?></textarea>
+							</div>
+
+							<div class = 'detail_query'>
+								<div class = "detail_query_attributes">Rechercher l'ID:</div><br>
+								<a class = "button_foreign_DB" target = "_blank" href = "<?php echo "https://www.ncbi.nlm.nih.gov/gene/?term=" . array_values($answer)[1]?>">NCBI Protein (Gene)</a>
+								<a class = "button_foreign_DB" target = "_blank" href = "<?php echo $uniprotkb_query . array_values($answer)[1] . $uniprotkb_query_score?>">Uniprot KB (Gene)</a>
+								<a class = "button_foreign_DB" target = "_blank" href = "<?php echo "https://www.ncbi.nlm.nih.gov/protein/?term=" . array_values($answer)[0]?>">NCBI Protein (CDS)</a>
+							</div>
+							<div class = 'detail_query'>
+								<div class = "detail_query_attributes">Rechercher la séquence :</div><br>
+								<a class = "button_foreign_DB" target = "_blank" href = "<?php echo $blast_base . substr(array_values($answer)[3], 0) . $blast_prog . "blastp" . $blast_db . "prot"; ?>">NCBI Protein</a>
+							</div>
+
+							<?php
+								$_SESSION['download'] = "";
+								foreach($answer as $ans) {$_SESSION['download'] = $_SESSION['download'] . $ans . ";";}		
+								$_SESSION['file_name'] = array_values($answer)[1] . ".pep";
+							?>
+
+							<div class = 'detail_query'>
+								<div class = "detail_query_attributes">Télécharger :</div><br>
+								<a class = "button_foreign_DB" href = "functions/download.php">Format PEP</a>
 							</div>
 
 							<?php
