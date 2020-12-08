@@ -9,15 +9,12 @@
 		}
 	}
 
-	// Variable globale de connexion base de données pour simplifier
-	//$db_conn = null;
-
-	// Fonction de connexion à la base de données postgres
 	function connect_db()
 	{
 
 		$db_info = parse_ini_file("start.ini");
-
+		#on se connecte à la base avant chaque requête, et on ferme la base
+		# > Conseillé par rapport à une ouverture persistante
 		global $db_conn;
 
 		$db_conn = pg_connect("host=" . $db_info['host']
@@ -26,7 +23,6 @@
 							. " port=" . $db_info['port']
 							. " password=" . $db_info['password']);
 	}
-	
 
 	function close_db()
 	{
@@ -34,7 +30,7 @@
 		pg_close($db_conn);
 	}
 
-
+	#Retourne OK si la page est connectée à la base
 	function is_conn_okay($current_connection)
 	{
 
