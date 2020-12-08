@@ -42,7 +42,7 @@
 							#accession à la plage utilisateur, accessible par tout les types d'utilisateur
 							header("location:main_utilisateur.php");
 						} else {
-						#le mot de passe ne correspond pas
+							#le mot de passe ne correspond pas
 							echo "Mot de passe invalide";
 						}
 					}

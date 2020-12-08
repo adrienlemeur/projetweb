@@ -67,7 +67,7 @@
 					</form>
 
 				<?php endif;
-				
+
 				#Si le bouton submit du formulaire de recherche de génome est soumis, construit la requête SQL à partir des informations fournies par l'utilisateur
 				if(isset($_POST['query_genome'])){
 
@@ -94,7 +94,6 @@
 						$_SESSION['query'] = $_SESSION['query'] . ";";
 					}
 				?>
-
 				<?php #AFFICHAGE FORMULAIRE GENE ?>
 
 				<?php if($_POST["select_query_type"] == "gene"): ?>
@@ -274,7 +273,7 @@
 					?>
 			</div>
 
-			<?php #Permet de conserver la forme de l'affichage entre deux rafraichissement ?>
+			<?php 	#Permet de conserver la forme de l'affichage entre deux rafraichissement ?>
 			<?php	if(isset($_POST["query_genome"])){$_SESSION['last_query'] = "genome";}
 					if(isset($_POST["query_gene"])){$_SESSION['last_query'] = "gene";}
 					if(isset($_POST["query_prot"])){$_SESSION['last_query'] = "prot";}	?>
@@ -314,7 +313,7 @@
 								echo $query;
 								while ($line = pg_fetch_array($query_results, null, PGSQL_ASSOC)) {
 
-								#Affichage des résultats de la query sous la forme d'un tableau à 2, 4 ou 3 colonnes
+									#Affichage des résultats de la query sous la forme d'un tableau à 2, 4 ou 3 colonnes
 									echo "<tr>";
 									foreach ($line as $col_value) {
 										echo "<td class = \"query_line\">$col_value</td>";
@@ -365,7 +364,6 @@
 						#si la dernière query est un génome (la clef primaire stockée est donc celle d'un génome)
 						if($_SESSION['last_query'] == "genome"){
 
-
 							#on cherche le tuple associé à la clef primaire
 							$query = "SELECT * FROM db_genome.genome as genome WHERE genome.nom_genome = '" . $_SESSION['primary_key'] . "';";
 							$look_it_up = pg_query($GLOBALS['db_conn'], $query) or die ("ERROR");
@@ -404,12 +402,15 @@
 							?>
 
 
-							<?php #Téléchargement au format texte>
+							<?php #Téléchargement au format texte> ?>
+
 							<div class = 'detail_query'>
 								<div class = "detail_query_attributes">Télécharger :</div><br>
 								<a class = "button_foreign_DB" href = "functions/download.php">Format GENOME</a>
 							</div>
 							
+							
+							<?php #Visualisation du génome> ?>
 							<?php $_SESSION['visualisation_genome'] = array_values($answer)[0]; ?>
 
 							<div class = 'detail_query'>
