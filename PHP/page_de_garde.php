@@ -62,14 +62,14 @@
 			?>
 
 			<div style="float:right;">
-				<form class="form-inline" method="post" action="<?php echo $_SERVER['PHP_SELF']?>" style="float:right;">
-					<label for="email" class = "bouton">Email : </label>
-					<input type="email" class="form-control" class ="email" placeholder="Entrez votre email" name="email">
+				<form class="menu_horizontal" method="post" action="<?php echo $_SERVER['PHP_SELF']?>" style="float:right;">
+					<label for="email" class = "really_not_a_link">Email</label>
+					<input type="email" placeholder="Entrez votre email" name="email">
 
-					<label for="pwd" class = "bouton">Mot de Passe : </label>
-					<input type="password" class="form-control" class = "pwd" placeholder="Entrez un mot de passe" name="pwd">
+					<label for="pwd" class = "really_not_a_link">Mot de Passe</label>
+					<input type="password" placeholder="Entrez un mot de passe" name="pwd">
 
-					<button type="submit" name = "submit_connexion_button" class="btn btn-default" style = "font-size: 1em;">Connexion</button>
+					<button type="submit" name = "submit_connexion_button" class = "probably_not_a_button">Connexion</button>
 				</form>
 
 					<div>
