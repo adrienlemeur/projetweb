@@ -56,7 +56,8 @@ body
 }
 
 .menu_horizontal li {
-	display: inline ;
+	display: inline;
+	line-height:1.9em;
 }
 
 .menu_horizontal li a {
@@ -112,8 +113,8 @@ body
 
 .answer_menu{
 	float: left;
-	background-color: #4C4CB2;
-	height: 80vh;
+	background-color: #4682B4;
+	height: 75vh;
 	width: 35%;
 	margin-left: 1%;
 	overflow: auto;
@@ -121,8 +122,8 @@ body
 
 .detail_menu{
 	float: left;
-	background-color: #000066;
-	height: 80vh;
+	background-color: #4682B4;
+	height: 75vh;
 	width: 35%;
 	margin-left: 1%;
 	overflow: auto;
@@ -130,8 +131,8 @@ body
 
 
 .detail_query {
-	font-weight: bolder;
 	font-size:1em;
+	font-weight: bolder;
 	margin-left:2%;
 	margin-bottom:2%;
 
@@ -142,12 +143,12 @@ body
 }
 .detail_query_attributes {
 	float: left;
-	color:#fffca1;
+	color: #FFFF00;
 }
 
 .detail_query_output {
 	font-size:1em;
-	background-color: #4C4CB2;
+	background-color: #000066;
 	color: #fff600;
 	
 	float: right;
@@ -173,7 +174,57 @@ body
 }
 
 .button_foreign_DB:hover {
-  background-color: #9c7248;
+  background-color: #fff660;
   color: black;
   text-decoration: none;
+}
+
+
+/*Feuille de style Espace Administrateur*/
+
+.administrator_panel {
+	float: left;
+	background-color: #4682B4;
+	height: 80vh;
+	width: 45%;
+	margin-right: 2%;
+	margin-left: 2%;
+
+    overflow-y: auto;
+}
+
+.menu_name_admin{
+	font-size:1.1em;
+	text-align: center;
+	font-weight: bolder;
+
+	margin-bottom: 4%;
+	margin-top:2%;
+}
+
+
+.bloc_admin{
+	font-size:1em;
+	line-height: 0.8em;
+}
+
+.text_admin{
+	margin-left:4%;
+}
+
+.admin_form{
+	width: 50%;
+
+	float:right;
+	margin-right:10%;
+}
+
+.admin_user_table{
+	font-size: 0.7em;
+
+	background-color: #000066;
+	color: #fff600;
+
+	line-height:200%;
+	text-align: center;
 }

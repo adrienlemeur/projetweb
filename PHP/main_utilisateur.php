@@ -7,25 +7,26 @@
 		<head>
 			Espace Utilisateur
 		</head>
-		<div>
+
 		<?php
 			include_once('functions/connection.php');
-			page_init(); #Session start / kill si l'utilisateur n'est pas connecté			
+			page_init(); #Session start / kill si l'utilisateur n'est pas connecté					
 		?>
 
-		</div>
 
-			<?php #On affiche les pages accessibles en fonction des droits de l'utilisateur ?>
-			<ul class = "menu_horizontal" style="float:right;">
-				<li> <a href="main_utilisateur.php">Espace Utilisateur</a> </li>
-				<?php if($_SESSION['role'] == 'Annotateur'):?> <li> <a href="espace_annotateur.php">Espace Annotateur</a> </li> <?php endif; ?>
-				<?php if($_SESSION['role'] == 'Validateur'):?> <li> <a href="espace_validateur.php">Espace Validateur</a> </li> <?php endif; ?>
-				<li> <a href="deconnection.php">Déconnexion</a> </li>
-			</ul>
+		<?php #On affiche les pages accessibles en fonction des droits de l'utilisateur ?>
+		<ul class = "menu_horizontal" style="float:right;">
+			<li> <a href="main_utilisateur.php">Espace Utilisateur</a> </li>
+			<?php if($_SESSION['role'] == 'Annotateur' or $_SESSION['role'] == 'Admin'):?> <li> <a href="espace_annotateur.php">Espace Annotateur</a> </li> <?php endif; ?>
+			<?php if($_SESSION['role'] == 'Validateur' or $_SESSION['role'] == 'Admin'):?> <li> <a href="espace_validateur.php">Espace Validateur</a> </li> <?php endif; ?>
+			<?php if($_SESSION['role'] == 'Admin'):?> <li> <a href="espace_administrateur.php">Espace Administrateur</a> </li> <?php endif; ?>
+			<li> <a href="deconnection.php">Déconnexion</a> </li>
+		</ul>
 
 		<div style="height:10vh;"> </div>
 
 		<main>
+
 			<?php #Query menu : permet de sélectionner le type de formulaire proposé à gauche ?>
 			<div class = "query_menu">
 				<label class = "text_inscription_form" style="font-weight: bold;">Recherche</label>
@@ -34,17 +35,24 @@
 					<div style="margin-bottom:4%;">
 						<label class = "text_query_form">Type de recherche</label>
 						<select name= "select_query_type" class = "text_query_area_form" size = "1" onchange="this.form.submit();">
-							<option disabled selected value><?php echo $_POST["select_query_type"] ?></option>
+							<option disabled selected value><?php echo $_SESSION['last_query'] ?></option>
 							<option value="genome">Génome</option>
 							<option value="gene">Gène</option>
 							<option value="prot">Protéine</option>
 						</select>
 					</div>
 				</form>
-				
+
+				<?php
+					if(isset($_POST["select_query_type"]) and $_POST["select_query_type"] != $_SESSION['last_query']){
+						#$_POST["select_query_type"] = $_SESSION['last_query'];
+						$_SESSION['last_query'] = $_POST["select_query_type"];
+					}
+				?>
+		
 
 				<?php #AFFICHAGE FORMULAIRE GENOME ?>
-				<?php if($_POST["select_query_type"] == "genome"):?>
+				<?php if($_SESSION['last_query'] == "genome"):?>
 
 					<form method = "post" action="<?php echo $_SERVER['PHP_SELF']?>">
 						<div style = "margin-bottom:2%;">
@@ -96,7 +104,7 @@
 				?>
 				<?php #AFFICHAGE FORMULAIRE GENE ?>
 
-				<?php if($_POST["select_query_type"] == "gene"): ?>
+				<?php if($_SESSION['last_query'] == "gene"): ?>
 
 					<div class = "query_menu">
 						<form method = "post" action="<?php echo $_SERVER['PHP_SELF']?>">
@@ -158,7 +166,7 @@
 				#Si le bouton submit du formulaire de recherche de gène est soumis, construit la requête SQL à partir des informations fournies par l'utilisateur
 				if(isset($_POST['query_gene'])){
 
-						$_SESSION['query'] = "SELECT nom_cds, gene, gene_symbol, genome.nom_genome FROM db_genome.cds as cds, db_genome.genome as genome WHERE cds.nom_genome = genome.nom_genome";
+						$_SESSION['query'] = "SELECT cds.nom_cds, gene, gene_symbol, genome.nom_genome FROM db_genome.cds as cds, db_genome.genome as genome, db_genome.attribution_annotateur as an WHERE an.nom_cds = cds.nom_cds AND cds.nom_genome = genome.nom_genome AND valide = 1";
 
 						if(!empty($_POST['q_gene_name'])){
 							$_SESSION['query'] = $_SESSION['query'] . " AND gene LIKE '%" . $_POST['q_gene_name'] . "%'";
@@ -201,7 +209,7 @@
 
 				<?php #AFFICHAGE FORMULAIRE PEPTIDE ?>
 
-				<?php if($_POST["select_query_type"] == "prot"):?>
+				<?php if($_SESSION['last_query'] == "prot"):?>
 					<div id = "query_menu">
 						<form method = "post" action="<?php echo $_SERVER['PHP_SELF']?>">
 							<div style = "margin-bottom:2%;">
@@ -274,9 +282,20 @@
 			</div>
 
 			<?php 	#Permet de conserver la forme de l'affichage entre deux rafraichissement ?>
-			<?php	if(isset($_POST["query_genome"])){$_SESSION['last_query'] = "genome";}
-					if(isset($_POST["query_gene"])){$_SESSION['last_query'] = "gene";}
-					if(isset($_POST["query_prot"])){$_SESSION['last_query'] = "prot";}	?>
+			<?php	if(isset($_POST["query_genome"])){
+						$_SESSION['last_query'] = "genome";
+						$_SESSION['last_query_for_output'] = "genome";
+						}
+					if(isset($_POST["query_gene"])){
+						$_SESSION['last_query'] = "gene";
+						$_SESSION['last_query_for_output'] = "gene";
+						}
+					if(isset($_POST["query_prot"])){
+						$_SESSION['last_query'] = "prot";
+						$_SESSION['last_query_for_output'] = "prot";
+					}
+						
+					?>
 
 			<div class = "answer_menu">
 					<table>
@@ -286,13 +305,13 @@
 
 								echo "<tr>";
 									#Noms de colonnes (Génome)
-									if($_SESSION['last_query'] == "genome"){
+									if($_SESSION['last_query_for_output'] == "genome"){
 											echo "<td class = \"query_head\">Génome</td>";
 											echo "<td class = \"query_head\">Espèce</td>";
 									}
 
 									#Noms de colonnes (Gène)
-									if($_SESSION['last_query'] == "gene"){
+									if($_SESSION['last_query_for_output'] == "gene"){
 										echo "<td class = \"query_head\">CDS</td>";
 										echo "<td class = \"query_head\">Gène</td>";
 										echo "<td class = \"query_head\">Sigle</td>";
@@ -300,7 +319,7 @@
 									}
 									
 									#Noms de colonnes (Prot)
-									if($_SESSION['last_query'] == "prot"){
+									if($_SESSION['last_query_for_output'] == "prot"){
 										echo "<td class = \"query_head\">CDS</td>";
 										echo "<td class = \"query_head\">Génome</td>";
 										echo "<td class = \"query_head\">Espèce</td>";
@@ -331,10 +350,16 @@
 										<?php
 
 								}
-								#Si un des bouton est pressé, on conserve la valeur dans une variable de session pour conserver l'affichage
+
+								#Si un des bouton VOIR est pressé, on conserve la valeur dans une variable de session pour conserver l'affichage
 								#entre les rafraichissements
 								if(isset($_POST['primary_key'])){
 									$_SESSION['primary_key'] = $_POST['primary_key'];
+								}
+								
+								#Si l'utilisateur soumet le formulaire de gauche un nouvelle fois, on ne veut pas que le panneau continue d'être affiché
+								if(isset($_POST['query_genome']) or isset($_POST['query_gene']) or isset($_POST['query_prot'])){
+									unset($_SESSION['primary_key']);
 								}
 
 								pg_free_result($query_results);
@@ -362,7 +387,7 @@
 					if(isset($_SESSION['primary_key'])){
 
 						#si la dernière query est un génome (la clef primaire stockée est donc celle d'un génome)
-						if($_SESSION['last_query'] == "genome"){
+						if($_SESSION['last_query_for_output'] == "genome"){
 
 							#on cherche le tuple associé à la clef primaire
 							$query = "SELECT * FROM db_genome.genome as genome WHERE genome.nom_genome = '" . $_SESSION['primary_key'] . "';";
@@ -420,8 +445,8 @@
 							<?php
 						}
 						
-						#si la dernière query est un gène (la clef primaire stockée est donc celle d'un génome)
-						if($_SESSION['last_query'] == "gene"){
+						#si la dernière query est un gène (la clef primaire stockée est donc celle d'un gène)
+						if($_SESSION['last_query_for_output'] == "gene"){
 							$query = "SELECT * FROM db_genome.cds as cds WHERE cds.nom_cds = '" . $_SESSION['primary_key'] . "';";
 							$look_it_up = pg_query($GLOBALS['db_conn'], $query) or die ("ERROR");
 							$answer = pg_fetch_array($look_it_up, null, PGSQL_ASSOC);
@@ -508,7 +533,7 @@
 							<?php
 						}
 						#si la dernière query est une proteine
-						if($_SESSION['last_query'] == "prot"){
+						if($_SESSION['last_query_for_output'] == "prot"){
 
 							$query = "SELECT * FROM db_genome.pep as pep WHERE pep.nom_cds = '" . $_SESSION['primary_key'] . "';";
 							$look_it_up = pg_query($GLOBALS['db_conn'], $query) or die ("ERROR");

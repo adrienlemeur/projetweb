@@ -2,7 +2,6 @@
 	include_once('functions/connection.php');
 ?>
 
-
 <!DOCTYPE html>
 	<link rel="stylesheet" type="text/css" href="css_page_de_garde.css">
 
@@ -15,6 +14,7 @@
 			<br><br><br>			
 
 			<?php
+
 				if(isset($_POST["submit_connexion_button"])) {
 					#connection à la base de donnée
 					connect_db();
