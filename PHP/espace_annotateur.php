@@ -34,7 +34,7 @@
 			#Interrogation de la base de donnée : on cherche les séquences que doit annoter l'utilisateur
 			connect_db();
 			$connection_query = "SELECT nom_cds FROM db_genome.attribution_annotateur WHERE mail_annot ='".$_SESSION['email']."'AND annote=0;";
-			
+
 			$connection_result = pg_query($GLOBALS['db_conn'], $connection_query) or die("Connection impossible") ;
 			$query = pg_fetch_result($connection_result,0,0);
 			$next = pg_fetch_result($connection_result,1,0);
@@ -108,13 +108,10 @@
 						
 						<div class = "bloc_admin">
 
-							<label class = "text_admin">Type d'ADN</label>
-							<select name = "chromosome" class = "admin_form" size = "1">
-								<option disabled selected value></option>
-								<option value='chromosome'>chromosome</option>
-								<option value='plasmide'>plasmid</option>
-							</select>
-							<br><br><br>
+							<div class = "bloc_admin">
+								<label class = "text_admin">Nom du gène</label>
+								<input class = "admin_form" type = "text" name="gene"></textarea>
+							</div><br>
 
 							<div class = "bloc_admin">
 								<label class = "text_admin">Biotype du gène</label>
@@ -127,12 +124,19 @@
 								<input class = "admin_form" type="text" name="gene_symbol"></textarea>
 							</div>
 							<br>
+							
+							<label class = "text_admin">Type d'ADN</label>
+							<select name = "chromosome" class = "admin_form">
+								<option disabled selected value></option>
+								<option value='chromosome'>chromosome</option>
+								<option value='plasmide'>plasmid</option>
+							</select><br><br>
 
 							<div class = "bloc_admin">
 								<label class = "text_admin">Description</label>
 								<textarea class = "admin_form" name="description" rows="5"></textarea>
 							</div>
-							<br><br><br><br><br><br>
+							<br><br><br><br><br>
 							<button name="annotation" type="submit" style = "font-size:1em;margin-left:76%;">Annoter</button>
 						</form>
 					<?php endif;?>
@@ -144,12 +148,9 @@
 					<br> Le formulaire a bien été envoyé pour la séquence : <br>
 					<?php  #chromosome gene_biotype gene_symbol description
 						$_SESSION['annote'] = "UPDATE db_genome.cds SET chromosome='".$_POST['chromosome']."', gene_biotype='".$_POST['gene_biotype']."', gene_symbol='".$_POST['gene_symbol']."', description='".$_POST['description']."' WHERE nom_cds='".$_SESSION['annoteEnCours']."';";
-						$chgEtat="UPDATE db_genome.attribution_annotateur SET annote=1 WHERE nom_cds='".$_SESSION['annoteEnCours']."';";
-						
+						$chgEtat = "UPDATE db_genome.attribution_annotateur SET annote=1 WHERE nom_cds='".$_SESSION['annoteEnCours']."';";
 						echo $_SESSION['annoteEnCours'];
-						#echo $_SESSION['annote'];
-						#echo $chgEtat;
-						
+
 						#connexion à la BD pour ajout de modification
 						connect_db();
 						#ajout des annotations dans la base de données
@@ -158,13 +159,7 @@
 						$connection_result = pg_query($GLOBALS['db_conn'],$chgEtat) or die("\n\tChangement d'etat de annote impossible") ;
 
 						close_db();
-					?>
-
-
-			<?php endif; ?>
-			
-			
+					endif; ?>
 		</main>
-
 	</body>
 </html>
