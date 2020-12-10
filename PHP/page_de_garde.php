@@ -45,7 +45,7 @@
 
 							$query_last_connection = "UPDATE db_genome.utilisateurs as usr SET dateConnexion = '". $date . "' WHERE usr.email ='" . $_SESSION['email'] . "';";
 
-							pg_query($GLOBALS['db_conn'], $query_last_connection) or die("ERREUR TIME CONNECTION CONTACT THE DEV");
+							pg_query($GLOBALS['db_conn'], $query_last_connection) or die("TIME CONNEXION ERROR");
 
 							#accession à la plage utilisateur, accessible par tout les types d'utilisateur
 							header("location:main_utilisateur.php");

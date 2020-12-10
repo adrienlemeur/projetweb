@@ -6,8 +6,12 @@ body
 }
 
 .main_text{
-	text-align: center ;
-	font-size: 1.25em;
+	font-size: 1em;
+	float: left;
+	margin-left:5%;
+	margin-right:5%;
+	text-align: justify;
+
 }
 
 .plain_text{
@@ -201,7 +205,6 @@ body
 	margin-bottom: 4%;
 	margin-top:2%;
 }
-
 
 .bloc_admin{
 	font-size:1em;

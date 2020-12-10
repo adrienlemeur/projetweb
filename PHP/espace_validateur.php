@@ -14,11 +14,12 @@
 			<! Menu horizontal pour sélectionner l'interface (Utilisateur / Annotateur / Validateur)
 			Affichage en fonction des permissions + vérifier dans chaque page que l'utilisateur en cours a les droits pour accéder à cette fonctionnalité
 			>
+		<?php #On affiche les pages accessibles en fonction des droits de l'utilisateur ?>
 		<ul class = "menu_horizontal" style="float:right;">
 			<li> <a href="main_utilisateur.php">Espace Utilisateur</a> </li>
 			<?php if($_SESSION['role'] == 'Annotateur' or $_SESSION['role'] == 'Admin'):?> <li> <a href="espace_annotateur.php">Espace Annotateur</a> </li> <?php endif; ?>
 			<?php if($_SESSION['role'] == 'Validateur' or $_SESSION['role'] == 'Admin'):?> <li> <a href="espace_validateur.php">Espace Validateur</a> </li> <?php endif; ?>
-			<?php if($_SESSION['role'] == 'Admin'):?> <li> <a href="espace_administrateur.php">Espace Administrateur</a> </li> <?php endif; ?>
+			<?php if($_SESSION['role'] == 'Admin'):?> <li> <a href="espace_administrateur.php">Espace Admin</a> </li> <?php endif; ?>
 			<li> <a href="deconnection.php">Déconnexion</a> </li>
 		</ul>
 
