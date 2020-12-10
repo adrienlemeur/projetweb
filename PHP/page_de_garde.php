@@ -37,7 +37,8 @@
 							$_SESSION['role'] = pg_fetch_result($connection_result, 0, 1);
 
 							#variable permettant de vérifier la connection de l'utilisateur avant d'afficher les pages
-							$_SESSION['CONNECTION'] = $_POST['email'];
+							$_SESSION['CONNECTION'] = 'YES';
+							$_SESSION['email']=$_POST['email'];
 
 							#accession à la plage utilisateur, accessible par tout les types d'utilisateur
 							header("location:main_utilisateur.php");
