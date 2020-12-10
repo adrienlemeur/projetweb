@@ -136,15 +136,18 @@
 					<br> Le formulaire a bien été envoyé pour la séquence : <br>
 					<?php  #chromosome gene_biotype gene_symbol description
 						$_SESSION['annote'] = "UPDATE db_genome.cds SET chromosome='".$_POST['chromosome']."', gene_biotype='".$_POST['gene_biotype']."', gene_symbol='".$_POST['gene_symbol']."', description='".$_POST['description']."' WHERE nom_cds='".$_SESSION['annoteEnCours']."';";
+						$chgEtat="UPDATE db_genome.attribution_annotateur SET annote=1 WHERE nom_cds='".$_SESSION['annoteEnCours']."';";
 						
 						echo $_SESSION['annoteEnCours'];
-						echo $_SESSION['annote'];
-						
+						#echo $_SESSION['annote'];
+						#echo $chgEtat;
 						
 						#connexion à la BD pour ajout de modification
 						connect_db();
-						#
+						#ajout des annotations dans la base de données
 						$connection_result = pg_query($GLOBALS['db_conn'], $_SESSION['annote']) or die("\n\tInsertion impossible") ;
+						#changement du statut de l'annotation
+						$connection_result = pg_query($GLOBALS['db_conn'],$chgEtat) or die("\n\tChangement d'etat de annote impossible") ;
 
 						close_db();
 					?>
