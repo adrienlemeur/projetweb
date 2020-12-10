@@ -112,7 +112,7 @@ body
 
 .answer_menu{
 	float: left;
-	background-color: #4C4CB2;
+	background-color: #4682B4;
 	height: 80vh;
 	width: 35%;
 	margin-left: 1%;
@@ -121,7 +121,7 @@ body
 
 .detail_menu{
 	float: left;
-	background-color: #000066;
+	background-color: #4682B4;
 	height: 80vh;
 	width: 35%;
 	margin-left: 1%;
@@ -142,12 +142,12 @@ body
 }
 .detail_query_attributes {
 	float: left;
-	color:#fffca1;
+	color: #FFFF00;
 }
 
 .detail_query_output {
 	font-size:1em;
-	background-color: #4C4CB2;
+	background-color: #000066;
 	color: #fff600;
 	
 	float: right;
@@ -173,7 +173,7 @@ body
 }
 
 .button_foreign_DB:hover {
-  background-color: #9c7248;
+  background-color: #fff660;
   color: black;
   text-decoration: none;
 }

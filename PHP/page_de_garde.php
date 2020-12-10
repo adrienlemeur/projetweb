@@ -15,6 +15,7 @@
 			<br><br><br>			
 
 			<?php
+
 				if(isset($_POST["submit_connexion_button"])) {
 					#connection à la base de donnée
 					connect_db();

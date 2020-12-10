@@ -7,21 +7,21 @@
 		<head>
 			Espace Utilisateur
 		</head>
-		<div>
+
 		<?php
 			include_once('functions/connection.php');
-			page_init(); #Session start / kill si l'utilisateur n'est pas connecté			
+			page_init(); #Session start / kill si l'utilisateur n'est pas connecté
+					
 		?>
 
-		</div>
 
-			<?php #On affiche les pages accessibles en fonction des droits de l'utilisateur ?>
-			<ul class = "menu_horizontal" style="float:right;">
-				<li> <a href="main_utilisateur.php">Espace Utilisateur</a> </li>
-				<?php if($_SESSION['role'] == 'Annotateur'):?> <li> <a href="espace_annotateur.php">Espace Annotateur</a> </li> <?php endif; ?>
-				<?php if($_SESSION['role'] == 'Validateur'):?> <li> <a href="espace_validateur.php">Espace Validateur</a> </li> <?php endif; ?>
-				<li> <a href="deconnection.php">Déconnexion</a> </li>
-			</ul>
+		<?php #On affiche les pages accessibles en fonction des droits de l'utilisateur ?>
+		<ul class = "menu_horizontal" style="float:right;">
+			<li> <a href="main_utilisateur.php">Espace Utilisateur</a> </li>
+			<?php if($_SESSION['role'] == 'Annotateur'):?> <li> <a href="espace_annotateur.php">Espace Annotateur</a> </li> <?php endif; ?>
+			<?php if($_SESSION['role'] == 'Validateur'):?> <li> <a href="espace_validateur.php">Espace Validateur</a> </li> <?php endif; ?>
+			<li> <a href="deconnection.php">Déconnexion</a> </li>
+		</ul>
 
 		<div style="height:10vh;"> </div>
 
@@ -158,7 +158,7 @@
 				#Si le bouton submit du formulaire de recherche de gène est soumis, construit la requête SQL à partir des informations fournies par l'utilisateur
 				if(isset($_POST['query_gene'])){
 
-						$_SESSION['query'] = "SELECT nom_cds, gene, gene_symbol, genome.nom_genome FROM db_genome.cds as cds, db_genome.genome as genome WHERE cds.nom_genome = genome.nom_genome";
+						$_SESSION['query'] = "SELECT cds.nom_cds, gene, gene_symbol, genome.nom_genome FROM db_genome.cds as cds, db_genome.genome as genome, db_genome.attribution_annotateur as an WHERE an.nom_cds = cds.nom_cds AND cds.nom_genome = genome.nom_genome AND valide = 1";
 
 						if(!empty($_POST['q_gene_name'])){
 							$_SESSION['query'] = $_SESSION['query'] . " AND gene LIKE '%" . $_POST['q_gene_name'] . "%'";

@@ -3,7 +3,7 @@
 	function page_init()
 	{
 		session_start();
-		if($_SESSION['CONNECTION'] != 'YES'){
+		if(!isset($_SESSION['CONNECTION'])){
 			echo "Connectez vous pour vous pour pouvoir accéder à cette page";
 			die;
 		}
