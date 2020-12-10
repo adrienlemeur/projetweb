@@ -5,7 +5,7 @@ CREATE SCHEMA db_genome
 		email  VARCHAR(50) PRIMARY KEY,
 		prenom VARCHAR(20),
 		nom VARCHAR(30),
-		tel INT CHECK (tel > 0100000000), 
+		tel INT, 
 		adPhysique VARCHAR(100),
 		dateConnexion DATE DEFAULT CURRENT_DATE,
 		statut VARCHAR(10) DEFAULT ('Lecteur') CHECK (statut='Admin'or statut='Lecteur' or statut='Annotateur' or statut='Validateur'),
