@@ -64,7 +64,6 @@
 						<label for="role_choix1">Simple Utilisateur</label>
 					</div>
 
-
 					<div>
 						<input type="radio" name="role" value="Annotateur">
 						<label for="role_choix2">Annotateur</label>
