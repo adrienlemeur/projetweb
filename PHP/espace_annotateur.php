@@ -50,7 +50,7 @@
 					
 						<?php #si l'annotateur n'a pas de séquence attribuée
 							if ($query==NULL) : ?>
-								Vous n'avez pas de séquence à annoter
+								<span style = "float:left;">Vous n'avez pas de séquence à annoter</span><br><br>
 						<?php endif; ?>
 
 						<?php #si l'annotateur n'a qu'une séquence attribuée
