@@ -5,7 +5,13 @@
 
 <?php
 	include_once('functions/connection.php');
-	page_init(); #Session start / kill si l'utilisateur n'est pas connecté					
+	page_init(); #Session start / kill si l'utilisateur n'est pas connecté
+
+	if($_SESSION['role'] != 'Annotateur' and $_SESSION['role'] != 'Admin'){
+		echo "Vous ne pouvez pas accéder à cette page.";
+		die;
+	}
+				
 ?>
 
 <html>

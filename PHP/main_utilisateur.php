@@ -165,7 +165,7 @@
 				#Si le bouton submit du formulaire de recherche de gène est soumis, construit la requête SQL à partir des informations fournies par l'utilisateur
 				if(isset($_POST['query_gene'])){
 
-						$_SESSION['query'] = "SELECT cds.nom_cds, gene, gene_symbol, genome.nom_genome FROM db_genome.cds as cds, db_genome.genome as genome, db_genome.attribution_annotateur as an WHERE an.nom_cds = cds.nom_cds AND cds.nom_genome = genome.nom_genome AND valide = 1";
+						$_SESSION['query'] = "SELECT cds.nom_cds, gene, gene_symbol, genome.nom_genome FROM db_genome.cds as cds, db_genome.genome as genome WHERE cds.nom_genome = genome.nom_genome AND cds.annoteValide = 1";
 
 						if(!empty($_POST['q_gene_name'])){
 							$_SESSION['query'] = $_SESSION['query'] . " AND gene LIKE '%" . $_POST['q_gene_name'] . "%'";
