@@ -13,34 +13,35 @@ CREATE SCHEMA db_genome
 	)
 
 	CREATE TABLE genome (
-		nom_genome VARCHAR(36) PRIMARY KEY,
+		nom_genome VARCHAR(50) PRIMARY KEY,
 		seq TEXT NOT NULL,
 		espece VARCHAR(50)
 	)
 
 	CREATE TABLE cds (
-		nom_cds VARCHAR(15) PRIMARY KEY,
+		nom_cds VARCHAR(20) PRIMARY KEY,
 		chromosome VARCHAR(15) CHECK (chromosome='chromosome' or chromosome='plasmid'),
 		seq_start INT,
 		seq_end INT,
-		gene VARCHAR(15) UNIQUE,
-		gene_biotype VARCHAR(20),
-		gene_symbol VARCHAR(15),
+		gene VARCHAR(20) UNIQUE,
+		gene_biotype VARCHAR(50),
+		gene_symbol VARCHAR(20),
 		description VARCHAR(1000),
 		cds_sequence TEXT NOT NULL,
-		nom_genome VARCHAR(35) REFERENCES genome
+		nom_genome VARCHAR(50) REFERENCES genome,
+		annoteValide INT DEFAULT 0 CHECK (annoteValide=1 or annoteValide=0), -- 1 si oui, 0 si non
 	)
 	
 	CREATE TABLE pep(
-		nom_cds VARCHAR(15) PRIMARY KEY REFERENCES cds,
-		transcript VARCHAR(15) UNIQUE,
+		nom_cds VARCHAR(20) PRIMARY KEY REFERENCES cds,
+		transcript VARCHAR(20) UNIQUE,
 		transcript_biotype VARCHAR(20),
 		seq_pep TEXT NOT NULL
 	)
 
 	CREATE TABLE attribution_annotateur(
-		nom_genome VARCHAR(36) REFERENCES genome,
-		nom_cds VARCHAR(15) REFERENCES cds,
+		nom_genome VARCHAR(50) REFERENCES genome,
+		nom_cds VARCHAR(20) REFERENCES cds,
 		mail_annot VARCHAR(50) REFERENCES utilisateurs(email) ON UPDATE CASCADE,
 		valide INT DEFAULT 0 CHECK (valide=1 or valide=0), -- 1 si oui, 0 si non
 		annote INT DEFAULT 0 CHECK (annote=1 or annote=0), -- 1 si oui, 0 si non
