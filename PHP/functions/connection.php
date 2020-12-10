@@ -3,9 +3,13 @@
 	function page_init()
 	{
 		session_start();
+
 		if(!isset($_SESSION['CONNECTION'])){
-			echo "Connectez vous pour vous pour pouvoir accéder à cette page";
-			die;
+			echo "<script type='text/javascript'>
+					window.alert('Accès refusé. Connectez vous pour accéder à cette page');
+					document.location.replace('page_de_garde.php');
+				</script>";
+			exit();
 		}
 	}
 
