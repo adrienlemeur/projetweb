@@ -8,4 +8,3 @@
 	echo $_SESSION['download'];
 	exit();
 ?>
-

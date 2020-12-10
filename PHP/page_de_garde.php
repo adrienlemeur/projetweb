@@ -38,7 +38,14 @@
 
 							#variable permettant de vérifier la connection de l'utilisateur avant d'afficher les pages
 							$_SESSION['CONNECTION'] = 'YES';
-							$_SESSION['email']=$_POST['email'];
+							$_SESSION['email'] = $_POST['email'];
+							date_default_timezone_set('UTC');
+							
+							$date = date("Y") . "-" .date("m") . "-" . date("d");
+
+							$query_last_connection = "UPDATE db_genome.utilisateurs as usr SET dateConnexion = '". $date . "' WHERE usr.email ='" . $_SESSION['email'] . "';";
+
+							pg_query($GLOBALS['db_conn'], $query_last_connection) or die("ERREUR TIME CONNECTION CONTACT THE DEV");
 
 							#accession à la plage utilisateur, accessible par tout les types d'utilisateur
 							header("location:main_utilisateur.php");

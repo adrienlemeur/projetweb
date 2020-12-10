@@ -17,8 +17,6 @@
 	{
 
 		$db_info = parse_ini_file("start.ini");
-		#on se connecte à la base avant chaque requête, et on ferme la base
-		# > Conseillé par rapport à une ouverture persistante
 		global $db_conn;
 
 		$db_conn = pg_connect("host=" . $db_info['host']
