@@ -18,7 +18,7 @@
 			<li> <a href="main_utilisateur.php">Espace Utilisateur</a> </li>
 			<?php if($_SESSION['role'] == 'Annotateur' or $_SESSION['role'] == 'Admin'):?> <li> <a href="espace_annotateur.php">Espace Annotateur</a> </li> <?php endif; ?>
 			<?php if($_SESSION['role'] == 'Validateur' or $_SESSION['role'] == 'Admin'):?> <li> <a href="espace_validateur.php">Espace Validateur</a> </li> <?php endif; ?>
-			<?php if($_SESSION['role'] == 'Admin'):?> <li> <a href="espace_administrateur.php">Espace Admin</a> </li> <?php endif; ?>
+			<?php if($_SESSION['role'] == 'Admin'):?> <li> <a href="espace_administrateur.php">Espace Admin</a> </li><?php endif;?>
 			<li> <a href="deconnection.php">Déconnexion</a> </li>
 		</ul>
 
@@ -45,7 +45,6 @@
 
 				<?php
 					if(isset($_POST["select_query_type"]) and $_POST["select_query_type"] != $_SESSION['last_query']){
-						#$_POST["select_query_type"] = $_SESSION['last_query'];
 						$_SESSION['last_query'] = $_POST["select_query_type"];
 					}
 				?>
@@ -70,8 +69,8 @@
 						</div>
 
 
-						<div style="height:15vw;"></div>
-						<button name = "query_genome" type="submit" class="btn btn-default" style = "font-size: 1em;float:right;margin-right:5%;"> Recherche</button>
+						<div style="height:6vw;"></div>
+						<button name = "query_genome" type="submit" class="button_foreign_DB" style = "font-size: 1em;float:right;margin-right:7%;"> Recherche</button>
 					</form>
 
 				<?php endif;
@@ -157,8 +156,8 @@
 								<textarea class = "text_query_area_form" name="q_sequence" rows="10"></textarea>
 							</div>
 
-							<div style="height:7.5vw;"></div>
-							<button name = "query_gene" type="submit" class="btn btn-default" style = "font-size:1em;float:right;margin-right:5%;">Recherche</button>
+							<div style="height:6vw;"></div>
+							<button name = "query_gene" type="submit" class="button_foreign_DB" style = "font-size:1em;float:left;margin-left:7%;">Recherche</button>
 						</form>
 					</div>
 				<?php endif;
@@ -242,8 +241,8 @@
 								<textarea class = "text_query_area_form" name="q_sequence" rows="10"></textarea>
 							</div>
 
-							<div style="height:7.5vw;"></div>
-							<button name = "query_prot" type="submit" class="btn btn-default" style = "font-size:1em;float:right;margin-right:5%;">Recherche</button>
+							<div style="height:6vw;"></div>
+							<button name = "query_prot" type="submit" class="button_foreign_DB" style = "font-size:1em;float:right;margin-right:7%;">Recherche</button>
 						</form>
 					</div>
 					<?php endif;

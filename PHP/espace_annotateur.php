@@ -13,14 +13,7 @@
 		<head>
 			Espace Annotateur
 		</head>
-		<div>
-		<?php
-			include_once('functions/connection.php');
-			page_init(); #Session start / kill si l'utilisateur n'est pas connecté			
-		?>
-		</div>
-		
-			
+
 		<?php #On affiche les pages accessibles en fonction des droits de l'utilisateur ?>
 		<ul class = "menu_horizontal" style="float:right;">
 			<li> <a href="main_utilisateur.php">Espace Utilisateur</a> </li>
