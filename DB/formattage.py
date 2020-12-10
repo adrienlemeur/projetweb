@@ -153,8 +153,12 @@ for fichier in dCDS["listeCDSfile"] :
 		cds_sequence=dCDS[fichier][cds]['seq']
 		nom_genome=dCDS[fichier][cds]['nom_genome']
 		
+		if nom_genome=='ASM1330v1': #cas de new_coli
+			annoteValide=0
+		else : #le genome est annote
+			annoteValide=1
 		#ecriture de la ligne/n-uplet dans le csv
-		f.write(nom_cds+";"+chromosome+";"+seq_start+";"+seq_end+";"+gene+";"+gene_biotype+";"+ gene_symbol+";"+description+";"+cds_sequence+";"+nom_genome+"\n") #a modifier
+		f.write(nom_cds+";"+chromosome+";"+seq_start+";"+seq_end+";"+gene+";"+gene_biotype+";"+ gene_symbol+";"+description+";"+cds_sequence+";"+nom_genome+";"+annoteValide+"\n") #a modifier
 
 f.close()
 

@@ -29,7 +29,7 @@ CREATE SCHEMA db_genome
 		description VARCHAR(1000),
 		cds_sequence TEXT NOT NULL,
 		nom_genome VARCHAR(50) REFERENCES genome,
-		annoteValide INT DEFAULT 0 CHECK (annoteValide=1 or annoteValide=0), -- 1 si oui, 0 si non
+		annoteValide INT DEFAULT 0 CHECK (annoteValide=1 or annoteValide=0), -- 1 si oui, 0 si non annoter ET VALIDER
 	)
 	
 	CREATE TABLE pep(
