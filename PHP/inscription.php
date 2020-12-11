@@ -42,7 +42,6 @@
 					<input type="text" class ="input_inscription_form" name="prenom">
 				</div>
 
-
 				<div>
 					<br>
 					<label for="telephone" class = "text_inscription_form"> Numéro de Téléphone : </label>

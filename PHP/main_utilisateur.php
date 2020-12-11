@@ -19,7 +19,7 @@
 			<?php if($_SESSION['role'] == 'Annotateur' or $_SESSION['role'] == 'Admin'):?> <li> <a href="espace_annotateur.php">Espace Annotateur</a> </li> <?php endif; ?>
 			<?php if($_SESSION['role'] == 'Validateur' or $_SESSION['role'] == 'Admin'):?> <li> <a href="espace_validateur.php">Espace Validateur</a> </li> <?php endif; ?>
 			<?php if($_SESSION['role'] == 'Admin'):?> <li> <a href="espace_administrateur.php">Espace Admin</a> </li><?php endif;?>
-			<li> <a href="deconnection.php">Déconnexion</a> </li>
+			<li> <a href="functions/deconnection.php">Déconnexion</a> </li>
 		</ul>
 
 
@@ -165,7 +165,7 @@
 				#Si le bouton submit du formulaire de recherche de gène est soumis, construit la requête SQL à partir des informations fournies par l'utilisateur
 				if(isset($_POST['query_gene'])){
 
-						$_SESSION['query'] = "SELECT cds.nom_cds, gene, gene_symbol, genome.nom_genome FROM db_genome.cds as cds, db_genome.genome as genome, db_genome.attribution_annotateur as an WHERE an.nom_cds = cds.nom_cds AND cds.nom_genome = genome.nom_genome AND valide = 1";
+						$_SESSION['query'] = "SELECT cds.nom_cds, gene, gene_symbol, genome.nom_genome FROM db_genome.cds as cds, db_genome.genome as genome WHERE cds.nom_genome = genome.nom_genome AND cds.annoteValide = 1";
 
 						if(!empty($_POST['q_gene_name'])){
 							$_SESSION['query'] = $_SESSION['query'] . " AND gene LIKE '%" . $_POST['q_gene_name'] . "%'";
@@ -438,7 +438,7 @@
 							<?php $_SESSION['visualisation_genome'] = array_values($answer)[0]; ?>
 
 							<div class = 'detail_query'>
-								<a class = "button_foreign_DB" target = "_blank" href = "genome_visualisation.php">Visualisation Génome</a>
+								<a class = "button_foreign_DB" target = "_blank" href = "function/genome_visualisation.php">Visualisation Génome</a>
 							</div>
 
 							<?php
