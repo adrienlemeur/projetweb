@@ -36,20 +36,22 @@
 		connect_db();
 		#on cherche les séquences que doit reviewer le validateur
 		$aValider = "SELECT nom_cds FROM db_genome.attribution_annotateur WHERE annote=1 AND valide=0;";
+		
 		#on cherche les séquences que doit attribuer le validateur
 		$aAttribuer = "SELECT nom_cds FROM db_genome.cds WHERE annoteValide=0;";
 		#on cherche les annotateurs à qui le validateur peut attribuer les séquences
 		$qAnnot = "SELECT email FROM db_genome.utilisateurs WHERE statut='Annotateur';";
 		
 		$aValider_result = pg_query($GLOBALS['db_conn'], $aValider) or die("Liste des annotations à valider impossible à établir") ;
+		
 		$aAttribuer_result = pg_query($GLOBALS['db_conn'], $aAttribuer) or die("Liste des ORF a attribuer impossible à établir") ;
 		$eAnnot_result = pg_query($GLOBALS['db_conn'], $qAnnot) or die("Liste des annotateurs impossible à établir ") ;
 		
 		$V = pg_fetch_result($aValider_result,0,0);
 		$Vnext = pg_fetch_result($aValider_result,1,0);
+		
 		$A = pg_fetch_result($aAttribuer_result,0,0);
 		$Anext = pg_fetch_result($aAttribuer_result,1,0);
-		
 		$annotateurs=pg_fetch_result($eAnnot_result,0,0);
 		$annotateursNext=pg_fetch_result($eAnnot_result,0,0);
 
@@ -61,28 +63,28 @@
 		<?php #Attribuer des sequences aux annotateurs ?>
 			<div class = "administrator_panel">
 				<br>
+				
 				<label class = "menu_name_admin" style = "margin-left:10%;">Les séquences à annoter</label>
 				<div style="height:5%;"></div>
 				
 				<form method = "post" class = "text_query_form" action="<?php echo $_SERVER['PHP_SELF']?>">
 					<div style="margin-bottom:4%;">
-					<?php $choix1=False;
-					$choix2=False;
-					?>
-						<?php #Liste des séquences à attribuer
-							if ($A==NULL) : ?>
-								<span style = "float:left;">Vous n'avez pas de séquence à attribuer</span><br><br>
-						<?php elseif ($A!=NULL and !$Anext==1) : ?>
-								Il n'y plus qu'une séquence à attribuer dans la base ! <br>
-								<?php $_SESSION['cds']=$A;
-								$choix1=True;?>
+						
+						<?php ### Liste des séquences à attribuer
+						
+						if ($A==NULL) :
+							echo "Vous n'avez pas de séquence à attribuer</span><br><br>";
 							
-						<?php else : #plus d'une séquence à attribuer ?>
+						elseif ($A!=NULL and !$Anext==1): ?>
+								Il n'y plus qu'une séquence à attribuer dans la base ! <br>
+								<?php $_SESSION['sequence']=$A;
+						
+						else : #plus d'une séquence à attribuer ?>
+							
 							<label class = "text_query_form"> Choix d'une séquence : </label>
-							<select name="cds" class = "text_query_area_form" size = "1" onchange="this.form.submit();">
-								<option disabled selected value><?php echo $_POST["cds"] ?></option>
-								<optgroup>
+							<select name="sequence" class = "text_query_area_form" size = "1" onchange="this.form.submit();">
 								<?php
+								
 								$i=1;
 								$row = pg_fetch_result($aAttribuer_result,0,0);
 								while (!$row==0) {
@@ -91,25 +93,27 @@
 									$i=$i+1;
 								}
 								?>
-								</optgroup>
 							</select>
-							<?php $_SESSION['cds']=$_POST['cds']; #la séquence du choix est sauvegardée dans $A
-							$choix1=True; ?>
-						<?php endif; ?>
-						
-						<?php #Liste des annotateurs disponibles
-							if ($annotateurs==NULL) : ?>
-								<span style = "float:left;">Il n'y a pas d'annotateurs dans la base !!</span><br><br>
-						<?php elseif ($annotateurs!=NULL and !$annnotateursNext==1) : ?>
-								<br><br<br><br><br<br>Il n'y a qu'un annotateur dans la base ! Il est choisi d'office :
-								<?php echo $annotateurs;
-								$_SESSION['annotateur']=$annotateurs;
-								$choix2=True;?>
 							
-						<?php	else : #plus d'une séquence à attribuer ?>
+							<?php $_SESSION['sequence']=$_POST['sequence']; #la séquence du choix est sauvegardée ?>
+							<?php endif; ?>
+						
+						<?php
+						### Liste des annotateurs disponibles
+						
+						if ($annotateurs==NULL) :
+							echo "Il n'y a pas d'annotateurs dans la base !!<br><br>";
+						
+						elseif ($annotateurs!=NULL and !$annnotateursNext==1): ?>
+								<br><br<br><br><br<br>Il n'y a qu'un annotateur dans la base ! Il est choisi d'office :
+								<?php
+								$_SESSION['annotateur']=$annotateurs;
+								echo $_SESSION['annotateur'];
+								
+						else : #plus d'une séquence à attribuer ?>
+						
 							<label class = "text_query_form"> Choix d'un annotateur : </label>
 							<select name="annot" class = "text_query_area_form" size = "1" onchange="this.form.submit();">
-								<option disabled selected value><?php echo $_POST["annot"] ?></option>
 								<?php
 								$i=1;
 								$row = pg_fetch_result($eAnnot_result,0,0);
@@ -120,39 +124,43 @@
 								}
 								?>
 							</select>
-							<?php #$annotateurs=$_POST['annot']; #l'annotateur du choix est sauvegardé dans $annotateurs
-							$_SESSION['annotateur']=$_POST['annot'];
-							$choix2=True; ?>
+							
+							<?php $_SESSION['annotateur']=$_POST['annot'];?>
 						<?php endif; ?>
 					</div>
 					<br><br><br><br><br>
-					<button name="attribAnnot" type="submit" style = "font-size:1em;margin-left:76%;">Attribuer</button>
+					<button name="Attribuer" type="submit" style = "font-size:1em;margin-left:76%;">Attribuer</button>
 				</form>
-				<?php if($choix1==True and $choix2==True and isset($_POST['attribAnnot'])): #Si seq et annotateurs sont choisis ?>
-				<br><br><br><br><br><br><br><br>
-				<label class = "text_inscription_form" style="font-weight: bold;"> Verification de l'envoi </label>
-					<br> Les informations ont bien été saisies pour l'attribution. <br>
-					<?php
+						
+				<?php if(isset($_POST['Attribuer'])): #Si seq et annotateurs sont choisis et soumis ?>
+				
+					<?php echo "cds:",$_SESSION['sequence'];?>
 					
-						#recuperation du nom de genome :
-						$nom_genome="SELECT nom_genome FROM db_genome.cds WHERE nom_cds='".$_SESSION['cds']."';";
-						connect_db();
-						$ng_result=pg_query($GLOBALS['db_conn'], $nom_genome) or die("Connexion impossible à établir") ;
-						close_db();
-						$ng=pg_fetch_result($ng_result,0,0);
-						echo $ng;
+					<br><br><br><br><br><br><br><br>
+					<label class = "text_inscription_form" style="font-weight: bold;"> Verification de l'envoi </label>
+						<br> Les informations ont bien été saisies pour l'attribution. <br>
+						<?php
+						echo "annotateur :", $_SESSION['annotateur'];
+						echo "<br> sequence :", $_SESSION['sequence'],"<br>";
 						
-						
-						$peutAnnoter = "UPDATE db_genome.attribution_annotateur SET nom_genome='".$ng."', nom_cds='".$_SESSION['cds']."', mail_annot='".$_SESSION['annotateurs']."', valide=0, annote=0;";
-						echo $peutAnnoter;
+							#recuperation du nom de genome :
+							$nom_genome="SELECT nom_genome FROM db_genome.cds WHERE nom_cds='".$_SESSION['sequence']."';";							
+							connect_db();
+							$ng_result=pg_query($GLOBALS['db_conn'], $nom_genome) or die("Nom du génome impossible à sélectionner.") ;
+							close_db();
+							$ng=pg_fetch_result($ng_result,0,0);
+							
+							
+							$peutAnnoter = "INSERT INTO db_genome.attribution_annotateur VALUES ('".$ng."','".$_SESSION['sequence']."', '".$_SESSION['annotateur']."', 0, 0);";
+							echo $peutAnnoter;
 
-						#connexion à la BD pour ajout de la modification
-						connect_db();
-						#ajout des annotations dans la base de données
-						$connection_result = pg_query($GLOBALS['db_conn'], $peutAnnoter) or die("\n\tInsertion impossible") ;
-						close_db();
-					?>
-					<br> L'attribution a bien été intégrée à la base de données.
+							#connexion à la BD pour ajout de la modification
+							connect_db();
+							#ajout des annotations dans la base de données
+							$connection_result = pg_query($GLOBALS['db_conn'], $peutAnnoter) or die("\n\tInsertion impossible") ;
+							close_db();
+						?>
+						<br> L'attribution a bien été intégrée à la base de données.
 				<?php endif; ?>
 				
 			</div>
@@ -166,7 +174,7 @@
 				<label class = "text_query_form"> Choisissez une séquence sur laquelle travailler : </label>
 						<?php #Pas de séquence en attente de validation
 							if ($V==NULL) : ?>
-								<span style = "float:left;">Vous n'avez pas de séquence à attribuer</span><br><br>
+								<span style = "float:left;"><br><br>Vous n'avez pas de séquence à attribuer</span><br><br>
 						<?php elseif($V!=NULL and !$Vnext==1) : ?>
 								<br><br>>>> Il n'y plus qu'une séquence à attribuer dans la base :
 								<?php echo $V;?>
@@ -200,7 +208,7 @@
 					$gene_biotype = pg_fetch_result($Vselect_result,0,5);
 					$gene_symbol = pg_fetch_result($Vselect_result,0,6);
 					$description = pg_fetch_result($Vselect_result,0,7);
-					$_SESSION=$V;
+					$_SESSION['V']=$V;
 					?>
 					
 					<table>
@@ -236,34 +244,34 @@
 				<?php #en cas de validation, on change la valeur de annoteValide et valide
 					if(isset($_POST["Valider"])) {
 						
-						$estValide="UPDATE db_genome.cds SET annoteValide=1 WHERE nom_cds='".$V."';";
-						$estValide2="UPDATE db_genome.attribution_annotateur SET valide=1 WHERE nom_cds='".$V."';";
+						$estValide="UPDATE db_genome.cds SET annoteValide=1 WHERE nom_cds='".$_SESSION['V']."';";
+						$estValide2="UPDATE db_genome.attribution_annotateur SET valide=1 WHERE nom_cds='".$_SESSION['V']."';";
 						echo $estValide;
 						
 						connect_db();
 						$res1=pg_query($GLOBALS['db_conn'],$estValide) or die("Impossible de valider dans la table cds");
 						$res2=pg_query($GLOBALS['db_conn'],$estValide2) or die("Impossible de valider dans la table attribution_annotateur");
-						close_db();	
+						close_db();
+						echo "La validation de l'annotation a bien été prise en compte.";
+						
 					}
 					elseif(isset($_POST["Refuser"])){
 						#suppression des annotations
-						$estRefuse="UPDATE db_genome.attribution_annotateur SET annote=0 WHERE nom_cds='".$V."';";
+						$estRefuse="UPDATE db_genome.attribution_annotateur SET annote=0 WHERE nom_cds='".$_SESSION['V']."';";
 						#reinitialisation des annotations
-						$estRefuse2="UPDATE db_genome.cds SET gene_biotype='', gene_symbol='', description='' WHERE nom_cds='".$V."';"; #pas obligé de réinitialiser, cela dit...
-						echo $estRefuse;
+						#$estRefuse2="UPDATE db_genome.cds SET gene_biotype='', gene_symbol='', description='' WHERE nom_cds='".$_SESSION['V']."';"; #pas obligé de réinitialiser, cela dit...
 						
 						connect_db();
 						$res1=pg_query($GLOBALS['db_conn'],$estRefuse) or die("Impossible de refuser dans la table attribution_annotateur");
-						$res2=pg_query($GLOBALS['db_conn'],$estRefuse2) or die("Impossible de supprimer les annotations dans la table cds");
+						#$res2=pg_query($GLOBALS['db_conn'],$estRefuse2) or die("Impossible de supprimer les annotations dans la table cds");
 						close_db();
+						echo "Le refus de l'annotation a bien été pris en compte.";
 						
 					}
 					else #rien à faire
 					{}
 					
 					?>
-					
-					
 					
 			</div>
 			
