@@ -127,8 +127,8 @@
 							<?php $_SESSION['annotateur']=$_POST['annot'];?>
 						<?php endif; ?>
 					</div>
-					<br><br><br><br><br>
-					<button name="Attribuer" type="submit" class = "button_foreign_DB" style = "font-size:1.5em;margin-left:72%;">Attribuer</button>
+					<br>
+					<button name="Attribuer" type="submit" class = "button_foreign_DB" style = "font-size:1em;margin-left:78.5%;">Attribuer</button>
 				</form>
 				
 				<?php if(isset($_POST['Attribuer'])): #Si seq et annotateurs sont choisis et soumis ?>
@@ -169,7 +169,7 @@
 				<div class = "text_admin"> Choisissez une séquence sur laquelle travailler : </div>
 						<?php #Pas de séquence en attente de validation
 							if ($V == NULL): ?>
-								<br><div class = 'text_admin'>Vous n'avez pas de séquence à attribuer</div><br>
+								<br><div class = 'text_admin'>Vous n'avez pas de séquence à valider</div><br>
 						<?php elseif($V!=NULL and !$Vnext==1) : ?>
 								<br><br>>>> Il n'y plus qu'une séquence à attribuer dans la base :
 								<?php echo $V;?>
@@ -239,13 +239,12 @@
 						
 						$estValide="UPDATE db_genome.cds SET annoteValide=1 WHERE nom_cds='".$_SESSION['V']."';";
 						$estValide2="UPDATE db_genome.attribution_annotateur SET valide=1 WHERE nom_cds='".$_SESSION['V']."';";
-						echo $estValide;
 						
 						connect_db();
 						$res1=pg_query($GLOBALS['db_conn'],$estValide) or die("Impossible de valider dans la table cds");
 						$res2=pg_query($GLOBALS['db_conn'],$estValide2) or die("Impossible de valider dans la table attribution_annotateur");
 						close_db();
-						echo "La validation de l'annotation a bien été prise en compte.";
+						echo "<div class = 'text_admin'>La validation de l'annotation a bien été prise en compte.</div>";
 						
 						$aValider = "SELECT nom_cds FROM db_genome.attribution_annotateur WHERE annote=1 AND valide=0;";
 						connect_db();
