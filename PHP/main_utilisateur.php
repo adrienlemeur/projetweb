@@ -438,7 +438,7 @@
 							<?php $_SESSION['visualisation_genome'] = array_values($answer)[0]; ?>
 
 							<div class = 'detail_query'>
-								<a class = "button_foreign_DB" target = "_blank" href = "genome_visualisation.php">Visualisation Génome</a>
+								<a class = "button_foreign_DB" target = "_blank" href = "function/genome_visualisation.php">Visualisation Génome</a>
 							</div>
 
 							<?php

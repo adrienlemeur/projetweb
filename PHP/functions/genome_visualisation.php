@@ -6,8 +6,8 @@
 	<?php
 		include_once('functions/connection.php');
 		session_start();
-		
-		echo $_SESSION['visualisation_genome'];
+
+		echo "<div style = 'position:fixed;'>" . $_SESSION['visualisation_genome'] . "</div><br><br>";
 
 		# Variable session visualisation génome : nom du génome à visualiser
 		$query_genome = "SELECT * FROM db_genome.genome as genome WHERE genome.nom_genome = '" . $_SESSION['visualisation_genome'] . "';";
@@ -110,10 +110,10 @@
 <?php #Menu de sélection de la zone à visualiser ?>
 <form action="<?php echo $_SERVER['PHP_SELF']?>" method="POST" style = "position: fixed;">
 	<label class = "text_query_form">Start</label>
-	<input name="start" value = 500></textarea>
+	<input name="start" value = <?php echo $_POST['start'] ?>></textarea>
 	<br>
 	<label class = "text_query_form">Stop</label>
-	<input name="stop" value = 1500></textarea>
+	<input name="stop" value = <?php echo $_POST['stop'] ?>></textarea>
 
-	<button name = "query_gene" type="submit" style ="float:right; margin-right:-10%;">Définir la fenêtre</button>
+	<button name = "query_gene" type="submit" style ="float:right; margin-right:-10%;">Redéfinir la taille de la fenêtre</button>
 </form>
