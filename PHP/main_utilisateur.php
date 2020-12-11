@@ -362,7 +362,6 @@
 
 										<td>
 										<?php
-
 								}
 
 								#Si un des boutons est pressé, on conserve la valeur dans une variable de session

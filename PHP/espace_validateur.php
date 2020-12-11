@@ -133,17 +133,16 @@
 				<label class = "text_inscription_form" style="font-weight: bold;"> Verification de l'envoi </label>
 					<br> Les informations ont bien été saisies pour l'attribution. <br>
 					<?php
-					
+
 						#recuperation du nom de genome :
-						$nom_genome="SELECT nom_genome FROM db_genome.cds WHERE nom_cds='".$_SESSION['cds']."';";
+						$nom_genome="SELECT nom_genome FROM db_genome.cds WHERE nom_cds='". $_SESSION['cds'] ."';";
 						connect_db();
 						$ng_result=pg_query($GLOBALS['db_conn'], $nom_genome) or die("Connexion impossible à établir") ;
 						close_db();
 						$ng=pg_fetch_result($ng_result,0,0);
 						echo $ng;
-						
-						
-						$peutAnnoter = "UPDATE db_genome.attribution_annotateur SET nom_genome='".$ng."', nom_cds='".$_SESSION['cds']."', mail_annot='".$_SESSION['annotateurs']."', valide=0, annote=0;";
+
+						$peutAnnoter = "UPDATE db_genome.attribution_annotateur SET nom_genome='".$ng."', nom_cds='". $_SESSION['cds'] ."', mail_annot='".$_SESSION['annotateurs']."', valide=0, annote=0;";
 						echo $peutAnnoter;
 
 						#connexion à la BD pour ajout de la modification
@@ -194,7 +193,7 @@
 					<?php #recuperation des données d'annotation
 					$Vselect = "SELECT * FROM db_genome.cds WHERE nom_cds='".$V."';";
 					connect_db();
-					$Vselect_result = pg_query($GLOBALS['db_conn'],$Vselect) or die("Données de la séquence impossible à récupérer");
+					$Vselect_result = pg_query($GLOBALS['db_conn'], $Vselect) or die("Données de la séquence impossible à récupérer");
 					close_db();
 					$chromosome = pg_fetch_result($Vselect_result,0,1);
 					$gene_biotype = pg_fetch_result($Vselect_result,0,5);
