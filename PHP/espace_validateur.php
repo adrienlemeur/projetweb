@@ -66,15 +66,18 @@
 				
 				<form method = "post" class = "text_query_form" action="<?php echo $_SERVER['PHP_SELF']?>">
 					<div style="margin-bottom:4%;">
-					
+					<?php $choix1=False;
+					$choix2=False;
+					?>
 						<?php #Liste des séquences à attribuer
 							if ($A==NULL) : ?>
 								<span style = "float:left;">Vous n'avez pas de séquence à attribuer</span><br><br>
 						<?php elseif ($A!=NULL and !$Anext==1) : ?>
 								Il n'y plus qu'une séquence à attribuer dans la base ! <br>
-								<?php $_SESSION['cds']=$A;?>
+								<?php $_SESSION['cds']=$A;
+								$choix1=True;?>
 							
-						<?php	else : #plus d'une séquence à attribuer ?>
+						<?php else : #plus d'une séquence à attribuer ?>
 							<label class = "text_query_form"> Choix d'une séquence : </label>
 							<select name="cds" class = "text_query_area_form" size = "1" onchange="this.form.submit();">
 								<option disabled selected value><?php echo $_POST["cds"] ?></option>
@@ -91,7 +94,7 @@
 								</optgroup>
 							</select>
 							<?php $_SESSION['cds']=$_POST['cds']; #la séquence du choix est sauvegardée dans $A
-							echo $_SESSION['cds'] ?>
+							$choix1=True; ?>
 						<?php endif; ?>
 						
 						<?php #Liste des annotateurs disponibles
@@ -99,7 +102,9 @@
 								<span style = "float:left;">Il n'y a pas d'annotateurs dans la base !!</span><br><br>
 						<?php elseif ($annotateurs!=NULL and !$annnotateursNext==1) : ?>
 								<br><br<br><br><br<br>Il n'y a qu'un annotateur dans la base ! Il est choisi d'office :
-								<?php echo $annotateurs?>
+								<?php echo $annotateurs;
+								$_SESSION['annotateur']=$annotateurs;
+								$choix2=True;?>
 							
 						<?php	else : #plus d'une séquence à attribuer ?>
 							<label class = "text_query_form"> Choix d'un annotateur : </label>
@@ -115,14 +120,15 @@
 								}
 								?>
 							</select>
-							<?php $annotateurs=$_POST['annot']; #l'annotateur du choix est sauvegardé dans $annotateurs ?>
+							<?php #$annotateurs=$_POST['annot']; #l'annotateur du choix est sauvegardé dans $annotateurs
+							$_SESSION['annotateur']=$_POST['annot'];
+							$choix2=True; ?>
 						<?php endif; ?>
 					</div>
 					<br><br><br><br><br>
 					<button name="attribAnnot" type="submit" style = "font-size:1em;margin-left:76%;">Attribuer</button>
 				</form>
-				
-				<?php if(isset($_POST['attribAnnot'])): #Si le bouton submit est pressé, construit la requête SQL à partir des informations fournies par l'utilisateur ?>
+				<?php if($choix1==True and $choix2==True and isset($_POST['attribAnnot'])): #Si seq et annotateurs sont choisis ?>
 				<br><br><br><br><br><br><br><br>
 				<label class = "text_inscription_form" style="font-weight: bold;"> Verification de l'envoi </label>
 					<br> Les informations ont bien été saisies pour l'attribution. <br>
@@ -130,12 +136,14 @@
 					
 						#recuperation du nom de genome :
 						$nom_genome="SELECT nom_genome FROM db_genome.cds WHERE nom_cds='".$_SESSION['cds']."';";
-						echo $nom_genome;
+						connect_db();
 						$ng_result=pg_query($GLOBALS['db_conn'], $nom_genome) or die("Connexion impossible à établir") ;
+						close_db();
 						$ng=pg_fetch_result($ng_result,0,0);
+						echo $ng;
 						
 						
-						$peutAnnoter = "UPDATE db_genome.attribution_annotateur SET nom_genome='".$ng."', nom_cds='".$_SESSION['cds']."', mail_annot='".$annotateurs."', valide=0, annote=0;";
+						$peutAnnoter = "UPDATE db_genome.attribution_annotateur SET nom_genome='".$ng."', nom_cds='".$_SESSION['cds']."', mail_annot='".$_SESSION['annotateurs']."', valide=0, annote=0;";
 						echo $peutAnnoter;
 
 						#connexion à la BD pour ajout de la modification
