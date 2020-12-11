@@ -16,9 +16,6 @@
 
 <html>
 	<body>
-		<head>
-			Espace Annotateur
-		</head>
 
 		<?php #On affiche les pages accessibles en fonction des droits de l'utilisateur ?>
 		<ul class = "menu_horizontal" style="float:right;">

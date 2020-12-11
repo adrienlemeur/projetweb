@@ -12,9 +12,6 @@
 
 <html>
 	<body>
-		<head>
-			Espace Validateur
-		</head>
 
 			<! Menu horizontal pour sélectionner l'interface (Utilisateur / Annotateur / Validateur)
 			Affichage en fonction des permissions + vérifier dans chaque page que l'utilisateur en cours a les droits pour accéder à cette fonctionnalité

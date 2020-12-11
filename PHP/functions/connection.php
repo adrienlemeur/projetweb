@@ -12,6 +12,10 @@
 					document.location.replace('page_de_garde.php');
 				</script>";
 			exit();
+		} else {
+		
+		echo "Bienvenue " . $_SESSION['prenom'] . " " . $_SESSION['nom'] . " !";
+		
 		}
 	}
 

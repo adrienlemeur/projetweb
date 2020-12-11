@@ -4,9 +4,6 @@
 
 <html>
 	<body>
-		<head>
-			Espace Utilisateur
-		</head>
 
 		<?php
 			include_once('functions/connection.php');
