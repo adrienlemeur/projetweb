@@ -37,56 +37,47 @@
 
 			close_db();
 		?>
-		
-		<div style="height:10vh;"> </div>
-		
-		<main>
-			
-			<?php #Choix de la séquence à annoter ?>
-			<div class = "administrator_panel">
-				<br>
-				<label class = "menu_name_admin" style = "margin-left:10%;">Vos séquences à annoter</label>
-				<div style="height:5%;"></div>
-				
+	
+		<?php #Choix de la séquence à annoter ?>
+		<div class = "administrator_panel">
+			<div class = "menu_name_admin">Vos séquences à annoter</div>
+			<br>
+
 				<form method = "post" class = "text_query_form" action="<?php echo $_SERVER['PHP_SELF']?>">
-					<div style="margin-bottom:4%;">
 					
 						<?php #si l'annotateur n'a pas de séquence attribuée
-							if ($query==NULL) : ?>
-								<div style = "float:left;">Vous n'avez pas de séquence à annoter</span><br><br>
-						<?php endif; ?>
+							if ($query == NULL) :
+								echo "<div class = 'text_admin'>Vous n'avez pas de séquence à annoter</span><br><br>";
+						endif;
 
-						<?php #si l'annotateur n'a qu'une séquence attribuée
-							if ($query!=NULL and !$next==1) : ?>
-								Vous n'avez qu'une séquence à annoter :<br>
-								<?php echo $query?>
-							
-						<?php	else : #plus d'une séquence attribuée ?>
-							<label class = "text_query_form"> Choix d'une séquence : </label>
-							<select name="seq" class = "text_query_area_form" size = "1" onchange="this.form.submit();">
+						#si l'annotateur n'a qu'une séquence attribuée
+							if ($query!=NULL and !$next==1) :
+								echo "<div class = 'text_admin'>Vous n'avez qu'une séquence à annoter :<div>";
+								echo $query;
+							else : #plus d'une séquence attribuée ?>
+
+							<div class = "text_admin" style = "float:left;">Choisir une séquence :</div>
+							<select name="seq" class = "admin_form" onchange="this.form.submit();">
 								<option disabled selected value><?php echo $_POST["seq"] ?></option>
+
 								<?php
-								$i=1;
-								$row = pg_fetch_result($connection_result,0,0);
-								while (!$row==0) {
-									echo '<option value="'.$row.'">'.$row.'</option>';
-									$row = pg_fetch_result($connection_result,$i,0);
-									$i=$i+1;
-								}
+									$i=1;
+									$row = pg_fetch_result($connection_result,0,0);
+
+									while (!$row==0) {
+										echo '<option value="'.$row.'">'.$row.'</option>';
+										$row = pg_fetch_result($connection_result,$i,0);
+										$i=$i+1;
+									}
 								?>
 							</select>
-							<?php
-								$query=$_POST['seq'];
-								#on modifie la valeur de $query suivant le choix de l'utilisateur dans la liste
-							?>
-						<?php endif; ?>
-					</div>
+							<?php $query = $_POST['seq']; #on modifie la valeur de $query en fonction du choix de l'utilisateur
+							endif; ?>
 				</form>
-			</div>
-			
-			<div class = "administrator_panel">
-				<br>
-				<label class = "menu_name_admin" style = "margin-left:10%;"> Vos annotations </label>
+
+				<br><br>
+				<div class = "menu_name_admin">Vos annotations</div>
+
 				<?php if($query!=NULL):?>
 					 sur <?php echo $query; ?>
 					<div>
