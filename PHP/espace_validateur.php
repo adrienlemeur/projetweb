@@ -11,11 +11,7 @@
 ?>
 
 <html>
-	<body>
-		<head>
-			Espace Validateur
-		</head>
-		
+	<body>	
 			<! Menu horizontal pour sélectionner l'interface (Utilisateur / Annotateur / Validateur)
 			Affichage en fonction des permissions + vérifier dans chaque page que l'utilisateur en cours a les droits pour accéder à cette fonctionnalité
 			>
@@ -65,7 +61,7 @@
 			<div class = "administrator_panel">
 				<br>
 				
-				<label class = "menu_name_admin" style = "margin-left:10%;">Les séquences à annoter</label>
+				<div class = "menu_name_admin" style = "margin-left:10%;">Séquences à attribuer</div>
 				<div style="height:5%;"></div>
 				
 				<form method = "post" class = "text_query_form" action="<?php echo $_SERVER['PHP_SELF']?>">
@@ -74,7 +70,7 @@
 						<?php ### Liste des séquences à attribuer
 						
 						if ($A==NULL) :
-							echo "Vous n'avez pas de séquence à attribuer</span><br><br>";
+							echo "<br><div class = 'text_admin'>Vous n'avez pas de séquence à attribuer</div><br>";
 							
 						elseif ($A!=NULL and !$Anext==1): ?>
 								Il n'y plus qu'une séquence à attribuer dans la base ! <br>
@@ -132,7 +128,7 @@
 						<?php endif; ?>
 					</div>
 					<br><br><br><br><br>
-					<button name="Attribuer" type="submit" style = "font-size:1em;margin-left:76%;">Attribuer</button>
+					<button name="Attribuer" type="submit" class = "button_foreign_DB" style = "font-size:1.5em;margin-left:72%;">Attribuer</button>
 				</form>
 				
 				<?php if(isset($_POST['Attribuer'])): #Si seq et annotateurs sont choisis et soumis ?>
@@ -166,14 +162,14 @@
 			
 			<div class = "administrator_panel">
 				<br>
-				<label class = "menu_name_admin" style = "margin-left:10%;">Les annotations à valider sont les suivantes :</label>
+				<div class = "menu_name_admin" style = "margin-left:10%;">Annotations à valider</div>
 				<div style="height:5%;"></div>
 				
 				<form method = "post" class = "text_query_form" action="<?php echo $_SERVER['PHP_SELF']?>" >
-				<label class = "text_query_form"> Choisissez une séquence sur laquelle travailler : </label>
+				<div class = "text_admin"> Choisissez une séquence sur laquelle travailler : </div>
 						<?php #Pas de séquence en attente de validation
-							if ($V==NULL) : ?>
-								<span style = "float:left;"><br><br>Vous n'avez pas de séquence à attribuer</span><br><br>
+							if ($V == NULL): ?>
+								<br><div class = 'text_admin'>Vous n'avez pas de séquence à attribuer</div><br>
 						<?php elseif($V!=NULL and !$Vnext==1) : ?>
 								<br><br>>>> Il n'y plus qu'une séquence à attribuer dans la base :
 								<?php echo $V;?>
@@ -197,7 +193,7 @@
 						
 				<?php 
 				if(isset($_POST['Avalider']) or ($V!=NULL and !$Vnext==1)): ?>
-				<label class = "text_query_form"> Proposition à la validation </label>
+				<div class = "text_admin"> Proposition à la validation </div> <br>
 					<?php #recuperation des données d'annotation
 					$Vselect = "SELECT * FROM db_genome.cds WHERE nom_cds='".$V."';";
 					connect_db();
@@ -210,34 +206,32 @@
 					$_SESSION['V']=$V;
 					?>
 					
-					<table>
-						<tr>
+					<table style = 'margin-right:10%;margin-left:10%;table-layout:fixed;width:75%;overflow-x: auto;'>
+						<tr class = 'admin_user_table' style = 'font-weight: bolder;'>
 							<td> Nom CDS </td>
 							<td> <?php echo $V; ?> </td>
 						</tr>
-						<tr>
+						<tr class = 'admin_user_table' style = 'font-weight: bolder;'>
 							<td> Type ADN </td>
 							<td> <?php echo $chromosome; ?> </td>
 						</tr>
-						<tr>
+						<tr class = 'admin_user_table' style = 'font-weight: bolder;'>
 							<td> Biotype </td>
 							<td> <?php echo $gene_biotype; ?> </td>
 						</tr>
-						<tr>
+						<tr class = 'admin_user_table' style = 'font-weight: bolder;'>
 							<td> Symbole </td>
 							<td> <?php echo $gene_symbol; ?> </td>
 						</tr>
-						<tr>
+						<tr class = 'admin_user_table' style = 'font-weight: bolder;'>
 							<td> Description </td>
 							<td> <?php echo $description; ?> </td>
 						</tr>
 					</table>
 				<?php endif; ?>
-					
 					<form method = "post" class = "text_query_form" action="<?php echo $_SERVER['PHP_SELF']?>" >
-					<br><br><br>
-					<button name="Valider" type="submit" style = "font-size:1em;margin-left:76%;">Valider</button>
-					<button name="Refuser" type="submit" style = "font-size:1em;margin-left:76%;">Refuser</button>
+						<button name="Valider" class = "button_foreign_DB" type="submit" style = "float:right; margin-right:10%;">Valider</button>
+						<button name="Refuser" class = "button_foreign_DB" type="submit" style = "float:right;">Refuser</button>
 					</form>
 					
 				<?php #en cas de validation, on change la valeur de annoteValide et valide
@@ -267,10 +261,9 @@
 						connect_db();
 
 						$res1=pg_query($GLOBALS['db_conn'],$estRefuse) or die("Impossible de refuser dans la table attribution_annotateur");
-
-						
+					
 						close_db();
-						echo "Le refus de l'annotation a bien été pris en compte.";
+						echo "<br><div class = 'text_admin' style = 'float:left;'>Le refus de l'annotation a bien été pris en compte.</div>";
 					}
 					
 					?>

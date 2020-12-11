@@ -1,6 +1,4 @@
-<?php
-include_once('functions/connection.php');
-?>
+<?php include_once('functions/connection.php');?>
 
 <!DOCTYPE html>
 <link rel="stylesheet" type="text/css" href= "global_style.css">
@@ -95,13 +93,12 @@ include_once('functions/connection.php');
 				Bienvenue sur la banque de donnée en ligne d'Adrien Le Meur & Ombeline Lamer !
 			</div>
 
-			<div class = "plain_text" style = "float:left; margin: 2% 20% 2% 20%;">
-			Ce site est dédié à l'annotation des différentes souches d'Escherichia coli. Vous y trouverez les annotations validés par nos reviewers. Vous pourrez trouver et retrouver une séquence selon ses annotations et les comparer aux banques de données du NCBI et Uniprot. Vous pouvez également directement visualiser les séquences référencées sur ce site. <br><br>
-			Annotateurs, nous avons besoin de vous ! Des dizaines de séquences attendent votre expertise ! N'hésitez pas à vous inscrire pour pouvoir bénéficiez de toutes nos fonctionnalités. Les reviewer vous attribueront des séquences à annoter. Vous pourrez soumettre immédiatement vos suggestions qui seront ensuite révisées pour approbation. <br>
+			<div class = "plain_text" style = "float:left; margin: 2% 10% 2% 10%; text-align:justify;">
+			Ce site est dédié à l'annotation des différentes souches d'Escherichia coli. Vous y trouverez les annotations validés par nos reviewers. Vous pourrez trouver et retrouver une séquence selon ses annotations et les comparer aux banques de données du NCBI et Uniprot. Vous pouvez également directement visualiser les séquences référencées sur ce site.<br><br>
+			Annotateurs, nous avons besoin de vous ! Des dizaines de séquences attendent votre expertise ! N'hésitez pas à vous inscrire pour pouvoir bénéficiez de toutes nos fonctionnalités. Les reviewer vous attribueront des séquences à annoter. Vous pourrez soumettre immédiatement vos suggestions qui seront ensuite révisées pour approbation.<br>
 			Validateurs, vous pouvez attribuer et reviewer les annotations proposées.<br><br>
 			Nous vous souhaitons une bonne expérience sur ce site !
 			</div>
 		</div>
-
 	</body>
 </html>
