@@ -233,7 +233,7 @@
 						<button name="Valider" class = "button_foreign_DB" type="submit" style = "float:right; margin-right:10%;">Valider</button>
 						<button name="Refuser" class = "button_foreign_DB" type="submit" style = "float:right;">Refuser</button>
 					</form>
-					
+
 				<?php #en cas de validation, on change la valeur de annoteValide et valide
 					if(isset($_POST["Valider"])) {
 						
