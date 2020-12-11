@@ -10,8 +10,7 @@
 	if($_SESSION['role'] != 'Annotateur' and $_SESSION['role'] != 'Admin'){
 		echo "Vous ne pouvez pas accéder à cette page.";
 		die;
-	}
-				
+	}			
 ?>
 
 <html>
