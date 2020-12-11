@@ -4,7 +4,7 @@
 ?>
 
 <!DOCTYPE html>
-<link rel="stylesheet" type="text/css" href="./css_page_de_garde.css">
+<link rel="stylesheet" type="text/css" href= "global_style.css">
 	
 <html>
 	<body>
