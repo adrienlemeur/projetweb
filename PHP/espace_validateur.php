@@ -12,7 +12,10 @@
 
 <html>
 	<body>
-
+		<head>
+			Espace Validateur
+		</head>
+		
 			<! Menu horizontal pour sélectionner l'interface (Utilisateur / Annotateur / Validateur)
 			Affichage en fonction des permissions + vérifier dans chaque page que l'utilisateur en cours a les droits pour accéder à cette fonctionnalité
 			>
@@ -34,8 +37,8 @@
 		#on cherche les séquences que doit reviewer le validateur
 		$aValider = "SELECT nom_cds FROM db_genome.attribution_annotateur WHERE annote=1 AND valide=0;";
 		
-		#on cherche les séquences que doit attribuer le validateur
-		$aAttribuer = "SELECT nom_cds FROM db_genome.cds WHERE annoteValide=0;";
+		#on cherche les séquences que doit attribuer le validateur (non annoté-validé et non attribué)
+		$aAttribuer = "SELECT nom_cds FROM db_genome.cds WHERE annoteValide=0 EXCEPT(SELECT nom_cds FROM db_genome.attribution_annotateur);";
 		#on cherche les annotateurs à qui le validateur peut attribuer les séquences
 		$qAnnot = "SELECT email FROM db_genome.utilisateurs WHERE statut='Annotateur';";
 		
@@ -79,7 +82,8 @@
 						else : #plus d'une séquence à attribuer ?>
 							
 							<label class = "text_query_form"> Choix d'une séquence : </label>
-							<select name="sequence" class = "text_query_area_form" size = "1" onchange="this.form.submit();">
+							<select name="sequence" class = "text_query_area_form" size = "1" onchange="return $_POST['sequence'];">
+							<option disabled selected value><?php echo $_POST["sequence"] ?></option>
 								<?php
 								
 								$i=1;
@@ -110,7 +114,8 @@
 						else : #plus d'une séquence à attribuer ?>
 						
 							<label class = "text_query_form"> Choix d'un annotateur : </label>
-							<select name="annot" class = "text_query_area_form" size = "1" onchange="this.form.submit();">
+							<select name="annot" class = "text_query_area_form" size = "1" onchange="return $_POST['annot'];">
+							<option disabled selected value><?php echo $_POST["annot"] ?></option>
 								<?php
 								$i=1;
 								$row = pg_fetch_result($eAnnot_result,0,0);
@@ -128,17 +133,13 @@
 					<br><br><br><br><br>
 					<button name="Attribuer" type="submit" style = "font-size:1em;margin-left:76%;">Attribuer</button>
 				</form>
-<<<<<<< HEAD
-						
-				<?php if(isset($_POST['Attribuer'])): #Si seq et annotateurs sont choisis et soumis ?>
 				
-					<?php echo "cds:",$_SESSION['sequence'];?>
+				<?php if(isset($_POST['Attribuer'])): #Si seq et annotateurs sont choisis et soumis ?>
 					
-					<br><br><br><br><br><br><br><br>
+					<br><br><br>
 					<label class = "text_inscription_form" style="font-weight: bold;"> Verification de l'envoi </label>
-						<br> Les informations ont bien été saisies pour l'attribution. <br>
 						<?php
-						echo "annotateur :", $_SESSION['annotateur'];
+						echo "<br> annotateur :", $_SESSION['annotateur'];
 						echo "<br> sequence :", $_SESSION['sequence'],"<br>";
 						
 							#recuperation du nom de genome :
@@ -150,25 +151,6 @@
 							
 							
 							$peutAnnoter = "INSERT INTO db_genome.attribution_annotateur VALUES ('".$ng."','".$_SESSION['sequence']."', '".$_SESSION['annotateur']."', 0, 0);";
-							echo $peutAnnoter;
-=======
-				<?php if($choix1==True and $choix2==True and isset($_POST['attribAnnot'])): #Si seq et annotateurs sont choisis ?>
-				<br><br><br><br><br><br><br><br>
-				<label class = "text_inscription_form" style="font-weight: bold;"> Verification de l'envoi </label>
-					<br> Les informations ont bien été saisies pour l'attribution. <br>
-					<?php
-
-						#recuperation du nom de genome :
-						$nom_genome="SELECT nom_genome FROM db_genome.cds WHERE nom_cds='". $_SESSION['cds'] ."';";
-						connect_db();
-						$ng_result=pg_query($GLOBALS['db_conn'], $nom_genome) or die("Connexion impossible à établir") ;
-						close_db();
-						$ng=pg_fetch_result($ng_result,0,0);
-						echo $ng;
-
-						$peutAnnoter = "UPDATE db_genome.attribution_annotateur SET nom_genome='".$ng."', nom_cds='". $_SESSION['cds'] ."', mail_annot='".$_SESSION['annotateurs']."', valide=0, annote=0;";
-						echo $peutAnnoter;
->>>>>>> 6ece6fcf1546a7824aeb80bf80c629b1b27e82e0
 
 							#connexion à la BD pour ajout de la modification
 							connect_db();
@@ -196,7 +178,7 @@
 								<?php echo $V;?>
 							
 						<?php	else : #plus d'une séquence à valider ?>
-							<select name="Avalider" class = "text_query_area_form" size = "1" onchange="this.form.submit();">
+							<select name="Avalider" class = "text_query_area_form" size = "1" onchange="return $_POST['Avalider'];">
 								<option disabled selected value><?php echo $_POST["Avalider"] ?></option>
 								<?php
 								$i=1;
@@ -229,11 +211,11 @@
 					
 					<table>
 						<tr>
-							<td> nom CDS </td>
+							<td> Nom CDS </td>
 							<td> <?php echo $V; ?> </td>
 						</tr>
 						<tr>
-							<td> type ADN </td>
+							<td> Type ADN </td>
 							<td> <?php echo $chromosome; ?> </td>
 						</tr>
 						<tr>
@@ -274,23 +256,15 @@
 					elseif(isset($_POST["Refuser"])){
 						#suppression des annotations
 						$estRefuse="UPDATE db_genome.attribution_annotateur SET annote=0 WHERE nom_cds='".$_SESSION['V']."';";
-						#reinitialisation des annotations
-						#$estRefuse2="UPDATE db_genome.cds SET gene_biotype='', gene_symbol='', description='' WHERE nom_cds='".$_SESSION['V']."';"; #pas obligé de réinitialiser, cela dit...
 						
 						connect_db();
-<<<<<<< HEAD
+
 						$res1=pg_query($GLOBALS['db_conn'],$estRefuse) or die("Impossible de refuser dans la table attribution_annotateur");
-						#$res2=pg_query($GLOBALS['db_conn'],$estRefuse2) or die("Impossible de supprimer les annotations dans la table cds");
-=======
-						$res1=pg_query($GLOBALS['db_conn'], $estRefuse) or die("Impossible de refuser dans la table attribution_annotateur");
-						$res2=pg_query($GLOBALS['db_conn'], $estRefuse2) or die("Impossible de supprimer les annotations dans la table cds");
->>>>>>> 6ece6fcf1546a7824aeb80bf80c629b1b27e82e0
+
+						
 						close_db();
 						echo "Le refus de l'annotation a bien été pris en compte.";
-						
 					}
-					else #rien à faire
-					{}
 					
 					?>
 					
