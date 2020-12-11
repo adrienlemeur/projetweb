@@ -100,7 +100,7 @@
 					
 					<?php $_SESSION['annoteEnCours']=$query;?>
 					
-					<form method="post">
+					<form method="post" class = "text_query_form" action="<?php echo $_SERVER['PHP_SELF']?>">
 						
 						<div class = "bloc_admin">
 
@@ -125,7 +125,7 @@
 							<select name = "chromosome" class = "admin_form">
 								<option disabled selected value></option>
 								<option value='chromosome'>chromosome</option>
-								<option value='plasmide'>plasmid</option>
+								<option value='plasmid'>plasmid</option>
 							</select><br><br>
 
 							<div class = "bloc_admin">
@@ -136,12 +136,9 @@
 							<button name="annotation" type="submit" style = "font-size:1em;margin-left:76%;">Annoter</button>
 						</form>
 					<?php endif;?>
-				</div>
 
-			<?php if(isset($_POST['annotation'])): #Si le bouton submit du formulaire de recherche de gène est soumis, construit la requête SQL à partir des informations fournies par l'utilisateur ?>
-			<div class = "query_menu">
-				<label class = "text_inscription_form" style="font-weight: bold;"> Verification de l'envoi </label>
-					<br> Le formulaire a bien été envoyé pour la séquence : <br>
+					<?php if(isset($_POST['annotation'])): #Si le bouton submit du formulaire de recherche de gène est soumis, construit la requête SQL à partir des informations fournies par l'utilisateur ?>
+					<br> Le formulaire a bien été envoyé pour la séquence :
 					<?php  #chromosome gene_biotype gene_symbol description
 						$_SESSION['annote'] = "UPDATE db_genome.cds SET chromosome='".$_POST['chromosome']."', gene_biotype='".$_POST['gene_biotype']."', gene_symbol='".$_POST['gene_symbol']."', description='".$_POST['description']."' WHERE nom_cds='".$_SESSION['annoteEnCours']."';";
 						$chgEtat = "UPDATE db_genome.attribution_annotateur SET annote=1 WHERE nom_cds='".$_SESSION['annoteEnCours']."';";
@@ -156,6 +153,7 @@
 
 						close_db();
 					endif; ?>
+			</div>
 		</main>
 	</body>
 </html>
