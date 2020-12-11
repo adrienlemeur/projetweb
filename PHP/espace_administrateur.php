@@ -4,9 +4,6 @@
 
 <html>
 	<body>
-		<head>
-			Espace Utilisateur
-		</head>
 
 		<?php
 			include_once('functions/connection.php');
@@ -31,7 +28,7 @@
 
 		<div style="height:10vh;"> </div>
 		<main>
-
+			<?php #Formulaire de création d'un nouvel utilisateur ?>
 			<div class = "administrator_panel">
 				<div class = "menu_name_admin">Créer</div>
 
@@ -79,20 +76,23 @@
 
 				<?php
 					if(isset($_POST["create_user_admin"])) {
-						if(empty($_POST['pwd'])){echo "Entrez une adresse mail";} else
+						#on vérifie que les principaux attributs sont correctement rentrés
+						if(empty($_POST['email'])){echo "Entrez une adresse mail";} else
 						if(empty($_POST['pwd'])){echo "Entrez mot de passe";} else
 						if(empty($_POST['role'])){echo "Choisissez un rôle !";} else {
 
+							#Stockage du hash du mot de passe
 							$pwd_hashed = password_hash($_POST['pwd'], PASSWORD_DEFAULT);
 
 							connect_db();
-
+							#Requête de création de l'utilisateur
 							$inscription = "INSERT INTO db_genome.utilisateurs(email, prenom, nom, tel, adphysique, statut, mdp)
 								VALUES($1, $2, $3, $4, $5, $6, $7);";
 
 							pg_query_params($GLOBALS['db_conn'], $inscription, array($_POST['email'], $_POST['prenom'], $_POST['nom'], $_POST['telephone'], $_POST['adresse'], $_POST['role'], $pwd_hashed)) or die ("Erreur, veuillez réessayer<br>" . pg_last_error());
 
 							close_db();
+							#Confirme à l'administrateur que l'utilisateur a bien été créé
 							?> <script> window.alert('L\'utilisateur a été créé avec succès'); </script> <?php
 						}
 					} ?>
@@ -105,8 +105,11 @@
 						connect_db();
 						$query = "SELECT * FROM db_genome.utilisateurs;";
 						$answer = pg_query($GLOBALS['db_conn'], $query);
+
+						#table des utilisateurs
 						echo "<table>";
 
+						#affichage des noms colonnes
 						echo "<tr class = 'admin_user_table' style = 'font-weight: bolder;'>";
 						echo "<td>"; echo "E-mail";echo "</td>";
 						echo "<td>"; echo "Prénom";echo "</td>";
@@ -116,10 +119,11 @@
 						echo "<td>"; echo "Dernière connection";echo "</td>";
 						echo "<td>"; echo "Rôle";echo "</td>";
 						echo "</tr>";
-		
+						
+						#affichage des lignes
 						while ($line = pg_fetch_array($answer, null, PGSQL_ASSOC)) {
 							echo "<tr>";
-
+							#Affiche tout les attributs, sauf le hash du mot de passe
 							foreach($line as $key => $val){
 								if($key == "mdp"){break;}
 
@@ -134,6 +138,7 @@
 					?>
 					</div>
 						<div class = "bloc_admin">
+							<?php #Formulaire pour supprimer un utilisateur ?>
 							<div for = "email" class = "text_admin" style = "float:left;">Révoquer un utilisateur:</div>
 
 							<form action = "<?php echo $_SERVER['PHP_SELF']?>" method = "POST">
@@ -143,9 +148,11 @@
 							</form>
 
 							<?php
+								#on vérifie qu'un mail a été entré et qu'il a été confirmé
 								if(isset($_POST['email_to_delete'])){
 									if($_POST['email_to_delete'] == $_POST['email_to_delete_2']){
 										connect_db();
+										#Supprime l'utilisateur des tables utilisateurs et attribution_annotateur;
 										$exterminate_1 = "DELETE FROM db_genome.utilisateurs as usr WHERE usr.statut != 'Admin' AND usr.email = '" . $_POST['email_to_delete'] . "';";
 										$exterminate_2 = "DELETE FROM db_genome.attribution_annotateur as att WHERE att.mail_annot = '" . $_POST['email_to_delete'] . "';";
 										pg_query($GLOBALS['db_conn'], $exterminate_1) or die("Erreur");

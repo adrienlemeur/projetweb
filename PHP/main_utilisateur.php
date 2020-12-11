@@ -4,9 +4,6 @@
 
 <html>
 	<body>
-		<head>
-			Espace Utilisateur
-		</head>
 
 		<?php
 			include_once('functions/connection.php');
@@ -362,7 +359,6 @@
 
 										<td>
 										<?php
-
 								}
 
 								#Si un des boutons est pressé, on conserve la valeur dans une variable de session
@@ -434,8 +430,8 @@
 								<a class = "button_foreign_DB" target = "_blank" href = "<?php echo "https://www.ncbi.nlm.nih.gov/assembly/?term=" . array_values($answer)[0]?>">NCBI (Genome)</a>
 							</div>
 
-							<?php #On stock les attributs dans une variable en vu du téléchargement ?>
 							<?php
+								#On stock les attributs dans une variable en vu du téléchargement
 								$_SESSION['download'] = "";
 								foreach($answer as $ans) {$_SESSION['download'] = $_SESSION['download'] . $ans . ";";}		
 								$_SESSION['file_name'] = array_values($answer)[0] . ".genome";
@@ -443,7 +439,6 @@
 
 
 							<?php #Téléchargement au format texte> ?>
-
 							<div class = 'detail_query'>
 								<div class = "detail_query_attributes">Télécharger :</div><br>
 								<a class = "button_foreign_DB" href = "functions/download.php">Format GENOME</a>
@@ -462,12 +457,15 @@
 						
 						#si la dernière query est un gène (la clef primaire stockée est donc celle d'un gène)
 						if($_SESSION['last_query_for_output'] == "gene"){
+
+							#on recherche le gène sélectionné dans la base de donnée
 							$query = "SELECT * FROM db_genome.cds as cds WHERE cds.nom_cds = '" . $_SESSION['primary_key'] . "';";
 							$look_it_up = pg_query($GLOBALS['db_conn'], $query) or die ("ERROR");
 							$answer = pg_fetch_array($look_it_up, null, PGSQL_ASSOC);
 							
 							?>
 							<br>
+
 							<?php #Affichage des attributs ?>
 							<div class = 'detail_query'>
 								<div class = "detail_query_attributes">Gène</div>
@@ -522,15 +520,21 @@
 							<?php #Recherche dans les bases de données externes ?>
 							<div class = 'detail_query'>
 								<div class = "detail_query_attributes">Rechercher l'ID:</div><br>
+								
+								<?php #NCBI (GENE) ?>
 								<a class = "button_foreign_DB" target = "_blank" href = "<?php echo "https://www.ncbi.nlm.nih.gov/gene/?term=" . array_values($answer)[4]?>">NCBI (Gene)</a>
+								<?php #UNIPROT KB (CDS) ?>
 								<a class = "button_foreign_DB" target = "_blank" href = "<?php echo $uniprotkb_query . array_values($answer)[0] . $uniprotkb_query_score?>">Uniprot KB (CDS)</a>
+								<?php #NCBI (CDS) ?>
 								<a class = "button_foreign_DB" target = "_blank" href = "<?php echo "https://www.ncbi.nlm.nih.gov/protein/?term=" . array_values($answer)[0]?>">NCBI (CDS)</a>
 							</div>
-
+							
+							<?php #NCBI BLAST NR ?>
 							<div class = 'detail_query'>
 								<div class = "detail_query_attributes">Rechercher la séquence :</div><br>
 								<a class = "button_foreign_DB" target = "_blank" href = "<?php echo $blast_base . substr(array_values($answer)[8], 0) . $blast_prog . "blastn" . $blast_db . "nr"; ?>">NCBI Protein</a>
 							</div>
+
 							<?php #Téléchargement ?>
 							<?php
 								$_SESSION['download'] = "";

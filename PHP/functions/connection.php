@@ -5,11 +5,17 @@
 		session_start();
 
 		if(!isset($_SESSION['CONNECTION'])){
+			session_destroy();
+
 			echo "<script type='text/javascript'>
 					window.alert('Accès refusé. Connectez vous pour accéder à cette page');
 					document.location.replace('page_de_garde.php');
 				</script>";
 			exit();
+		} else {
+		
+		echo "Bienvenue " . $_SESSION['prenom'] . " " . $_SESSION['nom'] . " !";
+		
 		}
 	}
 

@@ -12,9 +12,6 @@
 
 <html>
 	<body>
-		<head>
-			Espace Validateur
-		</head>
 
 			<! Menu horizontal pour sélectionner l'interface (Utilisateur / Annotateur / Validateur)
 			Affichage en fonction des permissions + vérifier dans chaque page que l'utilisateur en cours a les droits pour accéder à cette fonctionnalité
@@ -131,6 +128,7 @@
 					<br><br><br><br><br>
 					<button name="Attribuer" type="submit" style = "font-size:1em;margin-left:76%;">Attribuer</button>
 				</form>
+<<<<<<< HEAD
 						
 				<?php if(isset($_POST['Attribuer'])): #Si seq et annotateurs sont choisis et soumis ?>
 				
@@ -153,6 +151,24 @@
 							
 							$peutAnnoter = "INSERT INTO db_genome.attribution_annotateur VALUES ('".$ng."','".$_SESSION['sequence']."', '".$_SESSION['annotateur']."', 0, 0);";
 							echo $peutAnnoter;
+=======
+				<?php if($choix1==True and $choix2==True and isset($_POST['attribAnnot'])): #Si seq et annotateurs sont choisis ?>
+				<br><br><br><br><br><br><br><br>
+				<label class = "text_inscription_form" style="font-weight: bold;"> Verification de l'envoi </label>
+					<br> Les informations ont bien été saisies pour l'attribution. <br>
+					<?php
+
+						#recuperation du nom de genome :
+						$nom_genome="SELECT nom_genome FROM db_genome.cds WHERE nom_cds='". $_SESSION['cds'] ."';";
+						connect_db();
+						$ng_result=pg_query($GLOBALS['db_conn'], $nom_genome) or die("Connexion impossible à établir") ;
+						close_db();
+						$ng=pg_fetch_result($ng_result,0,0);
+						echo $ng;
+
+						$peutAnnoter = "UPDATE db_genome.attribution_annotateur SET nom_genome='".$ng."', nom_cds='". $_SESSION['cds'] ."', mail_annot='".$_SESSION['annotateurs']."', valide=0, annote=0;";
+						echo $peutAnnoter;
+>>>>>>> 6ece6fcf1546a7824aeb80bf80c629b1b27e82e0
 
 							#connexion à la BD pour ajout de la modification
 							connect_db();
@@ -202,7 +218,7 @@
 					<?php #recuperation des données d'annotation
 					$Vselect = "SELECT * FROM db_genome.cds WHERE nom_cds='".$V."';";
 					connect_db();
-					$Vselect_result = pg_query($GLOBALS['db_conn'],$Vselect) or die("Données de la séquence impossible à récupérer");
+					$Vselect_result = pg_query($GLOBALS['db_conn'], $Vselect) or die("Données de la séquence impossible à récupérer");
 					close_db();
 					$chromosome = pg_fetch_result($Vselect_result,0,1);
 					$gene_biotype = pg_fetch_result($Vselect_result,0,5);
@@ -262,8 +278,13 @@
 						#$estRefuse2="UPDATE db_genome.cds SET gene_biotype='', gene_symbol='', description='' WHERE nom_cds='".$_SESSION['V']."';"; #pas obligé de réinitialiser, cela dit...
 						
 						connect_db();
+<<<<<<< HEAD
 						$res1=pg_query($GLOBALS['db_conn'],$estRefuse) or die("Impossible de refuser dans la table attribution_annotateur");
 						#$res2=pg_query($GLOBALS['db_conn'],$estRefuse2) or die("Impossible de supprimer les annotations dans la table cds");
+=======
+						$res1=pg_query($GLOBALS['db_conn'], $estRefuse) or die("Impossible de refuser dans la table attribution_annotateur");
+						$res2=pg_query($GLOBALS['db_conn'], $estRefuse2) or die("Impossible de supprimer les annotations dans la table cds");
+>>>>>>> 6ece6fcf1546a7824aeb80bf80c629b1b27e82e0
 						close_db();
 						echo "Le refus de l'annotation a bien été pris en compte.";
 						

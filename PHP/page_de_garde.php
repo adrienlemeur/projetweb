@@ -14,13 +14,12 @@ include_once('functions/connection.php');
 			<br><br><br>			
 
 			<?php
-
 				if(isset($_POST["submit_connexion_button"])) {
 					#connection à la base de donnée
 					connect_db();
 					
 					#interrogation de la base de donnée à la recherche du mail entré par l'utilisateur
-					$connection_query = "SELECT mdp,statut FROM db_genome.utilisateurs WHERE email = $1;";
+					$connection_query = "SELECT mdp,statut, prenom, nom FROM db_genome.utilisateurs WHERE email = $1;";
 					$connection_result = pg_query_params($GLOBALS['db_conn'], $connection_query, array($_POST['email'])) or die("Connection impossible") ;
 					$query_pwd = pg_fetch_result($connection_result, 0, 0);
 
@@ -36,6 +35,9 @@ include_once('functions/connection.php');
 							#lancement de la session
 							session_start();
 							$_SESSION['role'] = pg_fetch_result($connection_result, 0, 1);
+
+							$_SESSION['prenom'] = pg_fetch_result($connection_result, 0, 2);
+							$_SESSION['nom'] = pg_fetch_result($connection_result, 0, 3);
 
 							#Variables conservées tant que la session est ouverte
 
