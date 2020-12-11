@@ -53,7 +53,8 @@
 		$A = pg_fetch_result($aAttribuer_result,0,0);
 		$Anext = pg_fetch_result($aAttribuer_result,1,0);
 		$annotateurs=pg_fetch_result($eAnnot_result,0,0);
-		$annotateursNext=pg_fetch_result($eAnnot_result,0,0);
+		$annotateursNext=pg_fetch_result($eAnnot_result,1,0);
+		echo $annotateursNext;
 
 		close_db();
 	?>
@@ -105,14 +106,14 @@
 						if ($annotateurs==NULL) :
 							echo "Il n'y a pas d'annotateurs dans la base !!<br><br>";
 						
-						elseif ($annotateurs!=NULL and !$annnotateursNext==1): ?>
+						elseif ($annotateurs!=NULL and !$annnotateursNext==0): ?>
 								<br><br<br><br><br<br>Il n'y a qu'un annotateur dans la base ! Il est choisi d'office :
 								<?php
 								$_SESSION['annotateur']=$annotateurs;
 								echo $_SESSION['annotateur'];
 								
 						else : #plus d'une séquence à attribuer ?>
-						
+							<br><br>
 							<label class = "text_query_form"> Choix d'un annotateur : </label>
 							<select name="annot" class = "text_query_area_form" size = "1" onchange="return $_POST['annot'];">
 							<option disabled selected value><?php echo $_POST["annot"] ?></option>
@@ -178,7 +179,7 @@
 								<?php echo $V;?>
 							
 						<?php	else : #plus d'une séquence à valider ?>
-							<select name="Avalider" class = "text_query_area_form" size = "1" onchange="return $_POST['Avalider'];">
+							<select name="Avalider" class = "text_query_area_form" size = "1" onchange="this.form.submit();">
 								<option disabled selected value><?php echo $_POST["Avalider"] ?></option>
 								<?php
 								$i=1;
@@ -252,6 +253,12 @@
 						close_db();
 						echo "La validation de l'annotation a bien été prise en compte.";
 						
+						$aValider = "SELECT nom_cds FROM db_genome.attribution_annotateur WHERE annote=1 AND valide=0;";
+						connect_db();
+						$aValider_result = pg_query($GLOBALS['db_conn'], $aValider) or die("Liste des annotations à valider impossible à établir") ;
+						close_db();
+						$V = pg_fetch_result($aValider_result,0,0);
+						$Vnext = pg_fetch_result($aValider_result,1,0);
 					}
 					elseif(isset($_POST["Refuser"])){
 						#suppression des annotations
