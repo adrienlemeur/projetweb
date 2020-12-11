@@ -245,8 +245,8 @@
 						echo $estRefuse;
 						
 						connect_db();
-						$res1=pg_query($GLOBALS['db_conn'],$estRefuse) or die("Impossible de refuser dans la table attribution_annotateur");
-						$res2=pg_query($GLOBALS['db_conn'],$estRefuse2) or die("Impossible de supprimer les annotations dans la table cds");
+						$res1=pg_query($GLOBALS['db_conn'], $estRefuse) or die("Impossible de refuser dans la table attribution_annotateur");
+						$res2=pg_query($GLOBALS['db_conn'], $estRefuse2) or die("Impossible de supprimer les annotations dans la table cds");
 						close_db();
 						
 					}
