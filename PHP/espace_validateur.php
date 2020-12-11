@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-	<link rel="stylesheet" type="text/css" href="./css_page_de_garde.css">
+	<link rel="stylesheet" type="text/css" href="global_style.css">
 <?php
 	include_once('functions/connection.php');
 	page_init(); #Session start / kill si l'utilisateur n'est pas connecté
